@@ -1,0 +1,27 @@
+---
+// src/pages/en/category/[slug].astro
+export const prerender = false;
+
+import Layout from '../../../layouts/Layout.astro';
+import CategoryListing from '../../../components/CategoryListing.astro';
+import { getCategoriesWithCounts, getProductsInCategory } from '../../../lib/queries.js';
+import { env } from 'cloudflare:workers';
+
+const lang = 'en';
+const { slug } = Astro.params;
+const db = env.DB;
+
+const [categories, { category, products }] = await Promise.all([
+  getCategoriesWithCounts(db, lang),
+  getProductsInCategory(db, slug, lang),
+]);
+
+if (!category) {
+  return new Response('Category not found', { status: 404 });
+}
+
+const categoryName = category.name_en;
+---
+<Layout title={`${categoryName} — Superpress`} lang={lang}>
+  <CategoryListing categories={categories} activeSlug={slug} title={categoryName} products={products} lang={lang} />
+</Layout>
