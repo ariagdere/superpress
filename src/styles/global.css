@@ -18,12 +18,12 @@
   src:url('/fonts/NickelGothicVariable.woff2') format('woff2-variations');
   font-display:swap;
 }
-@font-face{font-family:'Helvetica Neue';src:url('/fonts/HelveticaNeue-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'Helvetica Neue';src:url('/fonts/HelveticaNeue-Italic.woff2') format('woff2');font-weight:400;font-style:italic;font-display:swap}
-@font-face{font-family:'Helvetica Neue';src:url('/fonts/HelveticaNeue-Medium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
-@font-face{font-family:'Helvetica Neue';src:url('/fonts/HelveticaNeue-Bold.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
-@font-face{font-family:'Helvetica Neue';src:url('/fonts/HelveticaNeue-BoldItalic.woff2') format('woff2');font-weight:700;font-style:italic;font-display:swap}
-@font-face{font-family:'Helvetica Neue';src:url('/fonts/HelveticaNeue-Black.woff2') format('woff2');font-weight:900;font-style:normal;font-display:swap}
+@font-face{font-family:'Helvetica Neue';src:url('/fonts/HelveticaNeue-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;ascent-override:71.4%;descent-override:19.8%;line-gap-override:8.3%}
+@font-face{font-family:'Helvetica Neue';src:url('/fonts/HelveticaNeue-Italic.woff2') format('woff2');font-weight:400;font-style:italic;font-display:swap;ascent-override:71.4%;descent-override:19.8%;line-gap-override:8.3%}
+@font-face{font-family:'Helvetica Neue';src:url('/fonts/HelveticaNeue-Medium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap;ascent-override:71.4%;descent-override:19.1%;line-gap-override:8.3%}
+@font-face{font-family:'Helvetica Neue';src:url('/fonts/HelveticaNeue-Bold.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap;ascent-override:71.4%;descent-override:19.8%;line-gap-override:8.3%}
+@font-face{font-family:'Helvetica Neue';src:url('/fonts/HelveticaNeue-BoldItalic.woff2') format('woff2');font-weight:700;font-style:italic;font-display:swap;ascent-override:71.4%;descent-override:19.8%;line-gap-override:8.3%}
+@font-face{font-family:'Helvetica Neue';src:url('/fonts/HelveticaNeue-Black.woff2') format('woff2');font-weight:900;font-style:normal;font-display:swap;ascent-override:71.4%;descent-override:16.8%;line-gap-override:8.3%}
 
 :root{
   --navy:#1D1D1B;--blue:#EB6811;--blue-l:#F08E4C;
