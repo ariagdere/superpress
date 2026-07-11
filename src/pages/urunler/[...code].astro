@@ -32,7 +32,7 @@ if (!product) {
 
 // Bu ürünün EN karşılığı var mı? Yoksa dil switcher'ı "Tüm Ürünler"e düşsün, 404'e değil.
 const enExists = await db.prepare("SELECT 1 FROM products WHERE prod_code = ? AND brand = 'Superpress' AND title_en IS NOT NULL").bind(code).first();
-const enSwitchOverride = enExists ? `/en/products/${encodeURIComponent(code)}` : '/en/category/';
+const enSwitchOverride = enExists ? `/en/products/${code}` : '/en/category/';
 
 const [specsRaw, description, specialNote, drawingUrl, images, certificates, compatible, related, keyDocs] = await Promise.all([
   getProductSpecs(db, product.id, lang),
