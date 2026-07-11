@@ -1,0 +1,149 @@
+---
+// src/components/CategoryListing.astro
+// activeSlug = null -> "Tüm Ürünler" seçili (kategori filtresi yok)
+interface Props {
+  categories: any[];
+  activeSlug: string | null;
+  title: string;
+  products: any[];
+  lang: 'tr' | 'en';
+}
+const { categories, activeSlug, title, products, lang } = Astro.props;
+const seriesWord = lang === 'en' ? 'series' : 'ürün serisi';
+const allProductsLabel = lang === 'en' ? 'All Products' : 'Tüm Ürünler';
+const totalCount = categories.reduce((sum, c) => sum + c.product_count, 0);
+
+// Layout.astro ile aynı TR <-> EN segment eşleştirmesi
+const SEGMENT_MAP = { kategori: 'category', urunler: 'products' };
+const lp = (p) => {
+  if (lang !== 'en') return p;
+  if (p === '/') return '/en';
+  const m = p.match(/^\/([a-z-]+)(\/.*)?$/);
+  if (!m) return `/en${p}`;
+  const [, seg, restRaw] = m;
+  return `/en/${SEGMENT_MAP[seg] || seg}${restRaw || ''}`;
+};
+import ScrollToTopButton from './ScrollToTopButton.astro';
+---
+<!-- ══════════ MASAÜSTÜ ══════════ -->
+<div class="desktop-only">
+  <div class="bc"><div class="bc-in">
+    <a href={lp('/')}>{lang === 'en' ? 'Home' : 'Ana Sayfa'}</a><span>›</span><span class="cur">{lang === 'en' ? 'Our Products' : 'Ürünlerimiz'}</span>
+  </div></div>
+
+  <div class="cb-header"><div class="cb-header-in">
+    <div class="cb-header-top">
+      <h1>{lang === 'en' ? 'Our Products' : 'Ürünlerimiz'}</h1>
+      <a href={lp('/kategori/')} class={`cb-tab${activeSlug === null ? ' on' : ''}`}>{allProductsLabel} · {totalCount}</a>
+    </div>
+    <p>{lang === 'en' ? 'Select a product group below to view all series in that group right underneath.' : 'Aşağıdan bir ürün grubu seçin, o gruba ait tüm ürün serilerini hemen altta görüntüleyin.'}</p>
+    <div class="cb-cat-grid">
+      {categories.map((c) => (
+        <a href={lp(`/kategori/${c.slug}`)} class={`cb-cat-card${c.slug === activeSlug ? ' on' : ''}`}>
+          <div class="cb-cat-thumb">{c.image_url && <img src={c.image_url} alt={c.name} />}</div>
+          <div class="cb-cat-info"><div class="cb-cat-name">{c.name}</div><div class="cb-cat-sub">{c.product_count} {seriesWord}</div></div>
+        </a>
+      ))}
+    </div>
+  </div></div>
+
+  <div class="cb-body">
+    <div class="cb-grid-hdr">
+      <div class="cb-grid-title">{title}</div>
+      <div class="cb-grid-count"><strong>{products.length}</strong> {seriesWord}</div>
+    </div>
+    <div class="cb-grid">
+      {products.map((p) => (
+        <a href={lp(`/urunler/${p.prod_code}`)} class="cb-card">
+          <div class="cb-card-img">{p.image && <img src={p.image} alt={p.title} />}</div>
+          <div class="cb-card-body">
+            <div class="cb-card-code">{p.prod_code}</div>
+            <div class="cb-card-name">{p.title}</div>
+            {(p.kesitRange || p.civataRange) && (
+              <div class="cb-card-specs">
+                {p.kesitRange && <div class="cb-card-spec">{lang === 'en' ? 'Cross-section' : 'Kesit'}: <b>{p.kesitRange} mm²</b></div>}
+                {p.civataRange && <div class="cb-card-spec">{lang === 'en' ? 'Bolt' : 'Civata'}: <b>{p.civataRange}</b></div>}
+              </div>
+            )}
+            <span class="cb-card-cta">{lang === 'en' ? 'Technical data →' : 'Teknik veriler →'}</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ MOBİL ══════════ -->
+<div class="mobile-only">
+  <div class="m-bc"><a href={lp('/')}>{lang === 'en' ? 'Home' : 'Ana Sayfa'}</a><span>›</span><span style="color:var(--g800)">{lang === 'en' ? 'Our Products' : 'Ürünlerimiz'}</span></div>
+
+  <div class="m-cb-header">
+    <h1>{lang === 'en' ? 'Our Products' : 'Ürünlerimiz'}</h1>
+    <p>{lang === 'en' ? 'Select a product group to see its series below.' : 'Bir ürün grubu seçin, altında ürün serilerini görün.'}</p>
+    <button class="m-cb-trigger" id="mCbTrigger">
+      <div class="m-cb-trigger-text">
+        <div class="m-cb-trigger-label">{lang === 'en' ? 'Product Group' : 'Ürün Grubu'}</div>
+        <div class="m-cb-trigger-val">{title}</div>
+      </div>
+      <span class="m-cb-trigger-arr">›</span>
+    </button>
+
+    <div class="m-drawer-overlay" id="mCbDrawerOverlay">
+      <div class="m-drawer-panel">
+        <div class="m-drawer-hdr">
+          <span>{lang === 'en' ? 'Select Product Group' : 'Ürün Grubu Seçin'}</span>
+          <button class="m-drawer-close" id="mCbDrawerClose">✕</button>
+        </div>
+        <div class="m-drawer-list">
+          <a href={lp('/kategori/')} class={`m-drawer-item${activeSlug === null ? ' on' : ''}`}>
+            <div class="m-drawer-info"><div class="m-drawer-name">{allProductsLabel}</div><div class="m-drawer-sub">{totalCount} {seriesWord}</div></div>
+            {activeSlug === null && <span class="m-drawer-check">✓</span>}
+          </a>
+          {categories.map((c) => (
+            <a href={lp(`/kategori/${c.slug}`)} class={`m-drawer-item${c.slug === activeSlug ? ' on' : ''}`}>
+              <div class="m-drawer-info"><div class="m-drawer-name">{c.name}</div><div class="m-drawer-sub">{c.product_count} {seriesWord}</div></div>
+              {c.slug === activeSlug && <span class="m-drawer-check">✓</span>}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="m-cb-body">
+    <div class="m-cb-grid-hdr">
+      <div class="m-cb-grid-title">{title}</div>
+      <div class="m-cb-grid-count"><strong>{products.length}</strong> {seriesWord}</div>
+    </div>
+    <div class="m-cb-list">
+      {products.map((p) => (
+        <a href={lp(`/urunler/${p.prod_code}`)} class="m-cb-card">
+          <div class="m-cb-img">{p.image && <img src={p.image} alt={p.title} />}</div>
+          <div class="m-cb-body2">
+            <div class="m-cb-code">{p.prod_code}</div>
+            <div class="m-cb-name">{p.title}</div>
+            {(p.kesitRange || p.civataRange) && (
+              <div class="m-cb-spec">
+                {p.kesitRange && <>{lang === 'en' ? 'Cross-section' : 'Kesit'}: <b>{p.kesitRange} mm²</b></>}
+                {p.kesitRange && p.civataRange && ' · '}
+                {p.civataRange && <>{lang === 'en' ? 'Bolt' : 'Civata'}: <b>{p.civataRange}</b></>}
+              </div>
+            )}
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+  <ScrollToTopButton />
+</div>
+
+<script>
+  const trigger = document.getElementById('mCbTrigger');
+  const overlay = document.getElementById('mCbDrawerOverlay');
+  const closeBtn = document.getElementById('mCbDrawerClose');
+  trigger?.addEventListener('click', () => overlay.classList.add('open'));
+  closeBtn?.addEventListener('click', () => overlay.classList.remove('open'));
+  overlay?.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.classList.remove('open');
+  });
+</script>
