@@ -1,0 +1,54 @@
+---
+export const prerender = false;
+import Layout from '../../layouts/Layout.astro';
+
+const lang = 'en';
+---
+<Layout title="About — Superpress" lang={lang}>
+  <div class="desktop-only">
+    <div class="bc"><div class="bc-in"><a href="/en">Home</a><span>›</span><span class="cur">About</span></div></div>
+  </div>
+  <div class="mobile-only">
+    <div class="m-bc"><a href="/en">Home</a><span>›</span><span style="color:var(--g800)">About</span></div>
+  </div>
+
+  <div class="sec"><div class="sec-in" style="max-width:820px">
+    <h1 style="font-family:var(--cond);text-transform:uppercase;font-size:28px;color:var(--navy);margin-bottom:20px">About</h1>
+    <p style="font-size:14.5px;color:var(--g600);line-height:1.9;margin-bottom:18px">
+      Superpress was established in 2023 as a subsidiary of Simpa Elektrik, to carry out activities related to
+      cable hand tools.
+    </p>
+    <p style="font-size:14.5px;color:var(--g600);line-height:1.9;margin-bottom:18px">
+      We offer the sector a range of mechanical, hydraulic, and electric hand tools used in the process of
+      cutting electrical cables and compressing cable lugs to prepare them for assembly. Cable cutters that
+      easily cut copper and aluminum cables, along with crimping pliers fully compatible with the cable lugs
+      manufactured under Simpa Elektrik, form the foundation of our products. The quality- and customer-focused
+      approach of Simpa Elektrik, under whose umbrella we operate, is also the core principle of Superpress.
+    </p>
+    <p style="font-size:14.5px;color:var(--g600);line-height:1.9">
+      We aim to reduce external dependency in our field of activity, and to manufacture, import, and export
+      high-quality products in flawless compatibility with the cable lugs we produce.
+    </p>
+  </div></div>
+
+  <div class="sec" style="background:var(--g50)"><div class="sec-in" style="max-width:820px">
+    <h2 style="font-family:var(--cond);text-transform:uppercase;font-size:26px;color:var(--navy);margin-bottom:20px">Our Quality Policy</h2>
+    <p class="kalite-text">As members of SUPERPRESS ELEKTRİK MALZEMESİ SANAYİ VE TİC. LTD. ŞTİ., in order to meet customer satisfaction in the products we manufacture, we undertake to:</p>
+    <ul class="kalite-list">
+      <li>Establish and maintain an effective management system,</li>
+      <li>Ensure the continuous improvement of our products, processes, and management system,</li>
+      <li>Reinforce customer satisfaction awareness through training,</li>
+      <li>Provide quality products and services by increasing the knowledge and skill level of our employees,</li>
+      <li>Offer our customers the best service within a framework of honesty,</li>
+      <li>Ensure that all applicable requirements are fulfilled and that the necessary resources remain available for this purpose.</li>
+    </ul>
+    <p class="kalite-text">Our approach to service is to keep customer satisfaction in view at every stage — order, production, and shipment — and to continually seek new ways to increase it.</p>
+  </div></div>
+
+<style>
+  .kalite-text { font-size: 14.5px; color: var(--g600); line-height: 1.85; margin-bottom: 14px; }
+  .kalite-list { list-style: none; padding: 0; margin: 0 0 16px 0; display: flex; flex-direction: column; gap: 10px; }
+  .kalite-list li { position: relative; padding-left: 22px; font-size: 14.5px; color: var(--g600); line-height: 1.7; }
+  .kalite-list li::before { content: '✓'; position: absolute; left: 0; top: 0; color: var(--blue); font-weight: 700; }
+</style>
+</Layout>
