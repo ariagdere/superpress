@@ -1,0 +1,196 @@
+---
+// src/layouts/Layout.astro
+import '../styles/global.css';
+import { getCategoriesWithCounts, getKeyDocuments } from '../lib/queries.js';
+import { env } from 'cloudflare:workers';
+
+interface Props {
+  title: string;
+  lang?: 'tr' | 'en';
+  trSwitchOverride?: string | null;
+  enSwitchOverride?: string | null;
+}
+const { title, lang = 'tr', trSwitchOverride = null, enSwitchOverride = null } = Astro.props;
+const path = Astro.url.pathname;
+
+// TR <-> EN sabit yol segmenti eşleştirmesi
+const SEGMENT_MAP = {
+  hakkimizda: 'about',
+  iletisim: 'contact',
+  'gizlilik-ve-guvenlik': 'privacy-security',
+  kategori: 'category',
+  urunler: 'products',
+};
+const SEGMENT_MAP_REVERSE = Object.fromEntries(Object.entries(SEGMENT_MAP).map(([tr, en]) => [en, tr]));
+
+// Koşulsuz TR -> EN çevirici
+const toEn = (p) => {
+  if (p === '/') return '/en';
+  const m = p.match(/^\/([a-z-]+)(\/.*)?$/);
+  if (!m) return `/en${p}`;
+  const [, seg, restRaw] = m;
+  return `/en/${SEGMENT_MAP[seg] || seg}${restRaw || ''}`;
+};
+
+// Locale-prefix helper: içerik linkleri için — sayfa TR ise dokunmaz, EN ise çevirir
+const lp = (p) => (lang === 'en' ? toEn(p) : p);
+
+const isActive = (prefix) => {
+  const target = lp(prefix);
+  return prefix === '/' ? path === target : path.startsWith(target);
+};
+
+// Dil değiştirici hedefleri (Superpress'te "EN karşılığı olmayan sayfa" istisnası yok — hepsi iki dilli)
+let trSwitchPath;
+let enSwitchPath;
+if (path.startsWith('/en')) {
+  const stripped = path.slice(3) || '/';
+  if (stripped === '/') {
+    trSwitchPath = '/';
+  } else {
+    const m = stripped.match(/^\/([a-z-]+)(\/.*)?$/);
+    trSwitchPath = m ? `/${SEGMENT_MAP_REVERSE[m[1]] || m[1]}${m[2] || ''}` : stripped;
+  }
+  enSwitchPath = path;
+} else {
+  trSwitchPath = path;
+  enSwitchPath = toEn(path);
+}
+if (trSwitchOverride !== null) trSwitchPath = trSwitchOverride;
+if (enSwitchOverride !== null) enSwitchPath = enSwitchOverride;
+
+const categories = await getCategoriesWithCounts(env.DB, lang);
+const keyDocs = await getKeyDocuments(env.DB, lang);
+
+const WHATSAPP_URL = 'https://api.whatsapp.com/send/?phone=905303576490&text&app_absent=0';
+const LOGO_MAIN = 'https://assets.superpress.com.tr/superpress-logo.png';
+const LOGO_WHITE = 'https://assets.superpress.com.tr/superpress-logo-white.png';
+const ADDRESS = 'Bozkurt Mahallesi Dolapdere Caddesi No: 207 İç Kapı No: 1, Şişli / İstanbul';
+---
+<!DOCTYPE html>
+<html lang={lang}>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="format-detection" content="telephone=no" />
+  <link rel="icon" type="image/png" href="https://assets.superpress.com.tr/favicon-suprepress.png" />
+  <title>{title}</title>
+  <link rel="canonical" href={`https://superpress.com.tr${path}`} />
+  <link rel="alternate" hreflang="tr" href={`https://superpress.com.tr${trSwitchPath}`} />
+  <link rel="alternate" hreflang="en" href={`https://superpress.com.tr${enSwitchPath}`} />
+  <link rel="alternate" hreflang="x-default" href={`https://superpress.com.tr${trSwitchPath}`} />
+</head>
+<body>
+  <div class="wrap">
+  <div class="frame">
+  <div class="desktop-only">
+  <div class="topbar"><div class="topbar-in">
+    <a href="tel:+902164996962"><svg viewBox="0 0 20 20" fill="currentColor" width="12" height="12" style="vertical-align:-1px"><path fill-rule="evenodd" d="M2 3.5A1.5 1.5 0 0 1 3.5 2h1.148a1.5 1.5 0 0 1 1.465 1.175l.716 3.223a1.5 1.5 0 0 1-1.052 1.767l-.933.267c-.41.117-.643.555-.48.95a11.542 11.542 0 0 0 6.254 6.254c.395.163.833-.07.95-.48l.267-.933a1.5 1.5 0 0 1 1.767-1.052l3.223.716A1.5 1.5 0 0 1 18 15.352V16.5a1.5 1.5 0 0 1-1.5 1.5H15c-1.149 0-2.263-.15-3.326-.43A13.022 13.022 0 0 1 2.43 8.326 13.019 13.019 0 0 1 2 5V3.5Z" clip-rule="evenodd" /></svg> +90 216 499 69 62</a>
+    <span style="opacity:.3">|</span>
+    <a href="mailto:info@superpress.com.tr"><svg viewBox="0 0 20 20" fill="currentColor" width="12" height="12" style="vertical-align:-1px"><path d="M3 4a2 2 0 0 0-2 2v1.161l8.441 4.221a1.25 1.25 0 0 0 1.118 0L19 7.162V6a2 2 0 0 0-2-2H3Z" /><path d="m19 8.839-7.77 3.885a2.75 2.75 0 0 1-2.46 0L1 8.839V14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.839Z" /></svg> info@superpress.com.tr</a>
+    <span style="opacity:.3">|</span>
+    <a href={WHATSAPP_URL} target="_blank" rel="noopener" class="topbar-wa"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12.04 2c-5.52 0-10 4.48-10 10 0 1.77.46 3.45 1.27 4.9L2 22l5.25-1.38A9.96 9.96 0 0 0 12.04 22c5.52 0 10-4.48 10-10s-4.48-10-10-10Zm5.86 14.24c-.25.7-1.24 1.28-2.03 1.45-.55.11-1.26.2-3.67-.79-3.08-1.27-5.06-4.4-5.21-4.6-.15-.2-1.25-1.66-1.25-3.17s.79-2.25 1.07-2.56c.28-.31.61-.39.81-.39.2 0 .41 0 .59.01.19.01.44-.07.69.53.25.6.85 2.08.93 2.23.08.15.13.33.03.53-.1.2-.15.33-.3.5-.15.18-.31.4-.44.53-.15.15-.3.31-.13.61.17.3.76 1.25 1.63 2.02 1.12 1 2.06 1.31 2.36 1.46.3.15.48.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.68-.15.28.1 1.76.83 2.06.98.3.15.5.23.57.35.08.13.08.75-.17 1.45Z"/></svg> WhatsApp</a>
+    <div class="lang">
+      <a href={trSwitchPath} class={lang === 'tr' ? 'cur' : ''}>TR</a>
+      <a href={enSwitchPath} class={lang === 'en' ? 'cur' : ''}>EN</a>
+    </div>
+  </div></div>
+
+  <header class="hdr"><div class="hdr-in">
+    <a href={lp('/')}><img src={LOGO_MAIN} alt="Superpress" /></a>
+    <nav>
+      <a href={lp('/')} class={`nav-a nav-home${isActive('/') ? ' cur' : ''}`} aria-label={lang === 'en' ? 'Home' : 'Ana Sayfa'}><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M11.47 3.84a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.06l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 0 0 1.061 1.06l8.69-8.69Z"/><path d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.43Z"/></svg></a>
+      <a href={lp('/kategori/')} class={`nav-a${isActive('/kategori') || isActive('/urunler') ? ' cur' : ''}`}>{lang === 'en' ? 'Products' : 'Ürünlerimiz'}</a>
+      <a href={keyDocs.catalogUrl || '#'} target="_blank" rel="noopener" class="nav-a">{lang === 'en' ? 'Catalog' : 'Katalog'}</a>
+      <a href={lp('/hakkimizda')} class={`nav-a${isActive('/hakkimizda') ? ' cur' : ''}`}>{lang === 'en' ? 'About' : 'Hakkımızda'}</a>
+      <a href={lp('/iletisim')} class="nav-a nav-cta">{lang === 'en' ? 'Contact' : 'İletişim'}</a>
+    </nav>
+  </div></header>
+  </div>
+
+  <div class="mobile-only">
+    <div class="m-topbar">
+      <div class="m-topbar-left">
+        <a href="tel:+902164996962" class="mc"><svg viewBox="0 0 20 20" fill="currentColor" width="11" height="11" style="vertical-align:-1px"><path fill-rule="evenodd" d="M2 3.5A1.5 1.5 0 0 1 3.5 2h1.148a1.5 1.5 0 0 1 1.465 1.175l.716 3.223a1.5 1.5 0 0 1-1.052 1.767l-.933.267c-.41.117-.643.555-.48.95a11.542 11.542 0 0 0 6.254 6.254c.395.163.833-.07.95-.48l.267-.933a1.5 1.5 0 0 1 1.767-1.052l3.223.716A1.5 1.5 0 0 1 18 15.352V16.5a1.5 1.5 0 0 1-1.5 1.5H15c-1.149 0-2.263-.15-3.326-.43A13.022 13.022 0 0 1 2.43 8.326 13.019 13.019 0 0 1 2 5V3.5Z" clip-rule="evenodd" /></svg> +90 216 499 69 62</a>
+        <a href={WHATSAPP_URL} target="_blank" rel="noopener" class="m-topbar-wa"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12.04 2c-5.52 0-10 4.48-10 10 0 1.77.46 3.45 1.27 4.9L2 22l5.25-1.38A9.96 9.96 0 0 0 12.04 22c5.52 0 10-4.48 10-10s-4.48-10-10-10Zm5.86 14.24c-.25.7-1.24 1.28-2.03 1.45-.55.11-1.26.2-3.67-.79-3.08-1.27-5.06-4.4-5.21-4.6-.15-.2-1.25-1.66-1.25-3.17s.79-2.25 1.07-2.56c.28-.31.61-.39.81-.39.2 0 .41 0 .59.01.19.01.44-.07.69.53.25.6.85 2.08.93 2.23.08.15.13.33.03.53-.1.2-.15.33-.3.5-.15.18-.31.4-.44.53-.15.15-.3.31-.13.61.17.3.76 1.25 1.63 2.02 1.12 1 2.06 1.31 2.36 1.46.3.15.48.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.68-.15.28.1 1.76.83 2.06.98.3.15.5.23.57.35.08.13.08.75-.17 1.45Z"/></svg>WhatsApp</a>
+      </div>
+      <div class="ml">
+        <a href={trSwitchPath} class={lang === 'tr' ? 'cur' : ''}>TR</a>
+        <a href={enSwitchPath} class={lang === 'en' ? 'cur' : ''}>EN</a>
+      </div>
+    </div>
+    <div class="m-hdr">
+      <button class="m-hdr-menu-btn" id="mMenuBtn" aria-label={lang === 'en' ? 'Menu' : 'Menü'}>☰</button>
+      <a href={lp('/')}><img src={LOGO_MAIN} alt="Superpress" /></a>
+      <span class="m-hdr-spacer"></span>
+    </div>
+    <div class="m-drawer-overlay" id="mDrawerOverlay">
+      <div class="m-drawer-panel">
+        <div class="m-drawer-hdr">
+          <span>{lang === 'en' ? 'Menu' : 'Menü'}</span>
+          <button class="m-drawer-close" id="mDrawerClose">✕</button>
+        </div>
+        <div class="m-drawer-list">
+          <a href={lp('/')} class={`m-drawer-item${isActive('/') ? ' on' : ''}`}><div class="m-drawer-info"><div class="m-drawer-name">{lang === 'en' ? 'Home' : 'Ana Sayfa'}</div></div></a>
+          <a href={lp('/kategori/')} class={`m-drawer-item${isActive('/kategori') || isActive('/urunler') ? ' on' : ''}`}><div class="m-drawer-info"><div class="m-drawer-name">{lang === 'en' ? 'Products' : 'Ürünlerimiz'}</div></div></a>
+          <a href={keyDocs.catalogUrl || '#'} target="_blank" rel="noopener" class="m-drawer-item"><div class="m-drawer-info"><div class="m-drawer-name">{lang === 'en' ? 'Catalog' : 'Katalog'}</div></div></a>
+          <a href={lp('/hakkimizda')} class={`m-drawer-item${isActive('/hakkimizda') ? ' on' : ''}`}><div class="m-drawer-info"><div class="m-drawer-name">{lang === 'en' ? 'About' : 'Hakkımızda'}</div></div></a>
+          <a href={lp('/iletisim')} class={`m-drawer-item${isActive('/iletisim') ? ' on' : ''}`}><div class="m-drawer-info"><div class="m-drawer-name">{lang === 'en' ? 'Contact' : 'İletişim'}</div></div></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <slot />
+
+  <div class="desktop-only">
+  <footer class="ftr"><div class="ftr-in">
+    <div class="ftr-col ftr-brand">
+      <img src={LOGO_WHITE} alt="Superpress" />
+      <p>{ADDRESS}<br />Tel: +90 216 499 69 62<br />E-posta: info@superpress.com.tr</p>
+      <a href={WHATSAPP_URL} target="_blank" rel="noopener" class="ftr-wa-btn"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M12.04 2c-5.52 0-10 4.48-10 10 0 1.77.46 3.45 1.27 4.9L2 22l5.25-1.38A9.96 9.96 0 0 0 12.04 22c5.52 0 10-4.48 10-10s-4.48-10-10-10Zm5.86 14.24c-.25.7-1.24 1.28-2.03 1.45-.55.11-1.26.2-3.67-.79-3.08-1.27-5.06-4.4-5.21-4.6-.15-.2-1.25-1.66-1.25-3.17s.79-2.25 1.07-2.56c.28-.31.61-.39.81-.39.2 0 .41 0 .59.01.19.01.44-.07.69.53.25.6.85 2.08.93 2.23.08.15.13.33.03.53-.1.2-.15.33-.3.5-.15.18-.31.4-.44.53-.15.15-.3.31-.13.61.17.3.76 1.25 1.63 2.02 1.12 1 2.06 1.31 2.36 1.46.3.15.48.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.68-.15.28.1 1.76.83 2.06.98.3.15.5.23.57.35.08.13.08.75-.17 1.45Z"/></svg> {lang === 'en' ? 'Ask on WhatsApp' : "WhatsApp'tan Soru Sor"}</a>
+    </div>
+    <div class="ftr-col">
+      <h4>{lang === 'en' ? 'Products' : 'Ürünler'}</h4>
+      {categories.map((c) => <a href={lp(`/kategori/${c.slug}`)}>{c.name}</a>)}
+    </div>
+    <div class="ftr-col">
+      <h4>{lang === 'en' ? 'Company' : 'Kurumsal'}</h4>
+      <a href={lp('/hakkimizda')}>{lang === 'en' ? 'About' : 'Hakkımızda'}</a><a href={lp('/gizlilik-ve-guvenlik')}>{lang === 'en' ? 'Privacy & Security' : 'Gizlilik ve Güvenlik'}</a><a href={lp('/iletisim')}>{lang === 'en' ? 'Contact' : 'İletişim'}</a>
+    </div>
+    <div class="ftr-col"><h4>{lang === 'en' ? 'Documents' : 'Belgeler'}</h4><a href={keyDocs.catalogUrl || '#'} target="_blank" rel="noopener">{lang === 'en' ? 'Catalog' : 'Katalog'}</a></div>
+  </div><div class="ftr-bot">
+    <p>© 2026 Superpress Elektrik Malzemesi San. ve Tic. Ltd. Şti.</p>
+  </div></footer>
+  </div>
+
+  <div class="mobile-only">
+    <div class="m-ftr">
+      <img src={LOGO_WHITE} alt="Superpress" />
+      <p>{ADDRESS}<br />Tel: <a href="tel:+902164996962" class="m-ftr-tel">+90 216 499 69 62</a><br />E-posta: info@superpress.com.tr</p>
+      <div class="m-ftr-social">
+        <a href={WHATSAPP_URL} target="_blank" rel="noopener" class="m-ftr-wa"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.04 2c-5.52 0-10 4.48-10 10 0 1.77.46 3.45 1.27 4.9L2 22l5.25-1.38A9.96 9.96 0 0 0 12.04 22c5.52 0 10-4.48 10-10s-4.48-10-10-10Zm5.86 14.24c-.25.7-1.24 1.28-2.03 1.45-.55.11-1.26.2-3.67-.79-3.08-1.27-5.06-4.4-5.21-4.6-.15-.2-1.25-1.66-1.25-3.17s.79-2.25 1.07-2.56c.28-.31.61-.39.81-.39.2 0 .41 0 .59.01.19.01.44-.07.69.53.25.6.85 2.08.93 2.23.08.15.13.33.03.53-.1.2-.15.33-.3.5-.15.18-.31.4-.44.53-.15.15-.3.31-.13.61.17.3.76 1.25 1.63 2.02 1.12 1 2.06 1.31 2.36 1.46.3.15.48.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.68-.15.28.1 1.76.83 2.06.98.3.15.5.23.57.35.08.13.08.75-.17 1.45Z"/></svg> WhatsApp</a>
+      </div>
+      <div class="m-ftr-links">
+        {categories.map((c) => <a href={lp(`/kategori/${c.slug}`)}>{c.name}</a>)}
+        <a href={lp('/hakkimizda')}>{lang === 'en' ? 'About' : 'Hakkımızda'}</a><a href={lp('/gizlilik-ve-guvenlik')}>{lang === 'en' ? 'Privacy & Security' : 'Gizlilik ve Güvenlik'}</a><a href={keyDocs.catalogUrl || '#'} target="_blank" rel="noopener">{lang === 'en' ? 'Catalog' : 'Katalog'}</a><a href={lp('/iletisim')}>{lang === 'en' ? 'Contact' : 'İletişim'}</a>
+      </div>
+      <div class="m-ftr-copy">© 2026 Superpress Elektrik Malzemesi San. ve Tic. Ltd. Şti.</div>
+    </div>
+  </div>
+  </div>
+  </div>
+</body>
+<script>
+  const mMenuBtn = document.getElementById('mMenuBtn');
+  const mDrawerOverlay = document.getElementById('mDrawerOverlay');
+  const mDrawerClose = document.getElementById('mDrawerClose');
+  if (mMenuBtn && mDrawerOverlay) {
+    mMenuBtn.addEventListener('click', () => mDrawerOverlay.classList.add('open'));
+    mDrawerClose?.addEventListener('click', () => mDrawerOverlay.classList.remove('open'));
+    mDrawerOverlay.addEventListener('click', (e) => {
+      if (e.target === mDrawerOverlay) mDrawerOverlay.classList.remove('open');
+    });
+  }
+</script>
+</html>

@@ -1,0 +1,8 @@
+name = "superpress"
+compatibility_date = "2026-07-01"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "simpa-db"
+database_id = "d35f9f41-97b4-4627-9c5f-9a5475ee94e3"

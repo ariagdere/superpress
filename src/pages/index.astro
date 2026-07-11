@@ -1,0 +1,100 @@
+---
+// src/pages/index.astro
+export const prerender = false;
+
+import Layout from '../layouts/Layout.astro';
+import { getCategoriesWithCounts, getKeyDocuments } from '../lib/queries.js';
+import { env } from 'cloudflare:workers';
+
+const lang = 'tr';
+const db = env.DB;
+
+const [categories, keyDocs] = await Promise.all([getCategoriesWithCounts(db, lang), getKeyDocuments(db, lang)]);
+---
+<Layout title="Superpress — Kablo El Aletleri" lang={lang}>
+
+<!-- ══════════ DESKTOP ══════════ -->
+<div class="desktop-only">
+  <div class="hero"><div class="hero-in">
+    <div class="hero-l">
+      <div class="badge">Simpa Elektrik İştiraki</div>
+      <h1>Kablo Montajında <em>Profesyonel</em> El Aletleri</h1>
+      <p>Kablo kesme, mekanik ve hidrolik pabuç sıkma penseleri — Simpa Elektrik'in ürettiği kablo pabuçlarıyla tam uyumlu, montaja hazır çözümler.</p>
+      <div class="hero-btns">
+        <a href="/kategori/" class="btn-p">Ürünleri İncele →</a>
+        <a href={keyDocs.catalogUrl || '#'} target="_blank" rel="noopener" class="btn-s"><svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15"><path fill-rule="evenodd" d="M4 4a2 2 0 0 1 2-2h4.586A2 2 0 0 1 12 2.586L15.414 6A2 2 0 0 1 16 7.414V16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4Zm2 6a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2H6Zm0 4a1 1 0 1 0 0 2h5a1 1 0 1 0 0-2H6Z" clip-rule="evenodd" /></svg> Katalog İndir</a>
+      </div>
+    </div>
+    <div class="hero-r">
+      <a href={keyDocs.catalogUrl || '#'} target="_blank" rel="noopener">
+        <img src="https://assets.superpress.com.tr/superpressktalogkutuSAG1.png" alt="Superpress Ürün Kataloğu" />
+      </a>
+    </div>
+  </div></div>
+
+  <div class="sec"><div class="sec-in" style="max-width:900px;text-align:center">
+    <div class="about-lbl" style="color:var(--blue)">Hakkımızda</div>
+    <h2 style="font-family:var(--cond);font-size:28px;color:var(--navy);margin:10px 0 18px">Simpa Elektrik Çatısı Altında, Kablo El Aletlerinde Uzman</h2>
+    <p style="font-size:14.5px;color:var(--g600);line-height:1.85;max-width:720px;margin:0 auto 22px">
+      Superpress, 2023 yılında Simpa Elektrik'in bir iştiraki olarak, elektrik kablolarının kesilip kablo
+      pabuçlarının sıkılarak montaja hazır hale getirilmesi sürecinde kullanılan mekanik, hidrolik ve elektrikli
+      el aletleri üretmek amacıyla kuruldu. Simpa Elektrik çatısı altında üretilen kablo pabuçlarıyla tam uyumlu
+      sıkma penseleri, ürünlerimizin temelini oluşturuyor.
+    </p>
+    <a href="/hakkimizda" class="btn-p" style="display:inline-block">Daha Fazla Bilgi →</a>
+  </div></div>
+
+  <div class="sec" style="background:var(--g50)"><div class="sec-in">
+    <div class="sec-hdr">
+      <div><div class="sec-title">Ürün <span>Grupları</span></div><div class="sec-sub">İhtiyacınıza uygun kablo el aletini seçin</div></div>
+    </div>
+    <div class="cb-cat-grid" style="grid-template-columns:repeat(3,1fr)">
+      {categories.map((c) => (
+        <a href={`/kategori/${c.slug}`} class="cb-cat-card">
+          <div class="cb-cat-thumb">{c.image_url && <img src={c.image_url} alt={c.name} />}</div>
+          <div class="cb-cat-info"><div class="cb-cat-name">{c.name}</div><div class="cb-cat-sub">{c.product_count} ürün serisi</div></div>
+        </a>
+      ))}
+    </div>
+  </div></div>
+</div>
+
+<!-- ══════════ MOBILE ══════════ -->
+<div class="mobile-only">
+  <div class="m-hero">
+    <a href={keyDocs.catalogUrl || '#'} target="_blank" rel="noopener">
+      <img class="m-hero-img" src="https://assets.superpress.com.tr/superpressktalogkutuSAG1.png" alt="Superpress Ürün Kataloğu" />
+    </a>
+    <div class="m-hero-body">
+      <div class="m-badge">Simpa Elektrik İştiraki</div>
+      <h1>Kablo Montajında <em>Profesyonel</em> El Aletleri</h1>
+      <p>Kablo kesme, mekanik ve hidrolik pabuç sıkma penseleri — montaja hazır çözümler.</p>
+      <div class="m-hero-btns"><a href="/kategori/" class="m-btn-p">Ürünleri İncele</a><a href={keyDocs.catalogUrl || '#'} target="_blank" rel="noopener" class="m-btn-s">Katalog</a></div>
+    </div>
+  </div>
+
+  <div class="m-sec">
+    <div style="text-align:center;padding:8px 4px 20px">
+      <div class="m-about-lbl" style="color:var(--blue)">Hakkımızda</div>
+      <h2 style="font-family:var(--cond);font-size:20px;color:var(--navy);margin:8px 0 12px">Kablo El Aletlerinde Uzman</h2>
+      <p style="font-size:13.5px;color:var(--g600);line-height:1.8;margin-bottom:16px">
+        Superpress, 2023 yılında Simpa Elektrik'in bir iştiraki olarak kuruldu. Simpa Elektrik çatısı altında
+        üretilen kablo pabuçlarıyla tam uyumlu sıkma penseleri, ürünlerimizin temelini oluşturuyor.
+      </p>
+      <a href="/hakkimizda" class="m-btn-p" style="display:inline-block">Daha Fazla Bilgi →</a>
+    </div>
+  </div>
+
+  <div class="m-sec" style="background:var(--g50)">
+    <h2 style="font-family:var(--cond);font-size:20px;color:var(--navy);margin-bottom:14px">Ürün Grupları</h2>
+    <div class="m-cb-list">
+      {categories.map((c) => (
+        <a href={`/kategori/${c.slug}`} class="m-cb-card">
+          <div class="m-cb-img">{c.image_url && <img src={c.image_url} alt={c.name} />}</div>
+          <div class="m-cb-body2"><div class="m-cb-name">{c.name}</div><div style="font-size:12px;color:var(--g600)">{c.product_count} ürün serisi</div></div>
+        </a>
+      ))}
+    </div>
+  </div>
+</div>
+</Layout>

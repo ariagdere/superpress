@@ -1,0 +1,55 @@
+---
+export const prerender = false;
+import Layout from '../layouts/Layout.astro';
+
+const lang = 'tr';
+---
+<Layout title="Hakkımızda — Superpress" lang={lang}>
+  <div class="desktop-only">
+    <div class="bc"><div class="bc-in"><a href="/">Ana Sayfa</a><span>›</span><span class="cur">Hakkımızda</span></div></div>
+  </div>
+  <div class="mobile-only">
+    <div class="m-bc"><a href="/">Ana Sayfa</a><span>›</span><span style="color:var(--g800)">Hakkımızda</span></div>
+  </div>
+
+  <div class="sec"><div class="sec-in" style="max-width:820px">
+    <h1 style="font-family:var(--cond);font-size:28px;color:var(--navy);margin-bottom:20px">Hakkımızda</h1>
+    <p style="font-size:14.5px;color:var(--g600);line-height:1.9;margin-bottom:18px">
+      Superpress; 2023 yılında Simpa Elektrik firmasının bir iştiraki olarak, kablo el aletleri ile ilgili
+      faaliyetleri yürütmek amacıyla kurulmuştur.
+    </p>
+    <p style="font-size:14.5px;color:var(--g600);line-height:1.9;margin-bottom:18px">
+      Sektöre; elektrik kablolarının kesilip, kablo pabuçlarının sıkılarak montaja hazır hale getirilmesi
+      sürecinde kullanılacak çeşitli mekanik, hidrolik ve elektrikli el aletleri sunmaktadır. Bakır ve alüminyum
+      kabloları kolaylıkla kesebilmek için kablo makasları, bunun yanı sıra Simpa Elektrik çatısı altında üretilen
+      kablo pabuçları ile tam uyumlu sıkma penseleri, ürünlerimizin temelini oluşturmaktadır. Çatısı altında
+      bulunduğumuz Simpa Elektrik firmasının kalite ve müşteri odaklı çalışma anlayışı, Superpress firmamızın da
+      ana prensibidir.
+    </p>
+    <p style="font-size:14.5px;color:var(--g600);line-height:1.9">
+      Faaliyet kolumuz ile ilgili dışa bağımlılığı azaltıp, ürettiğimiz kablo pabuçları ile kusursuz uyumdaki
+      yüksek kaliteli ürünlerin üretimini, ithalatını ve ihracatını yapmak vizyonu ile karşınızdayız.
+    </p>
+  </div></div>
+
+  <div class="sec" style="background:var(--g50)"><div class="sec-in" style="max-width:820px">
+    <h2 style="font-family:var(--cond);font-size:26px;color:var(--navy);margin-bottom:20px">Kalite Politikamız</h2>
+    <p class="kalite-text">Bizler, SUPERPRESS ELEKTRİK MALZEMESİ SANAYİ VE TİC. LTD. ŞTİ. mensupları olarak, ürettiğimiz ürünlerde müşteri memnuniyetini karşılamak için;</p>
+    <ul class="kalite-list">
+      <li>Etkin bir yönetim sistemi oluşturup devam ettirmeyi,</li>
+      <li>Ürünlerimizin, süreçlerimizin ve yönetim sistemimizin sürekli iyileştirilmesini sağlamayı,</li>
+      <li>Müşteri memnuniyeti bilincinin eğitimler vasıtasıyla pekiştirilmesini,</li>
+      <li>Çalışanlarımızın bilgi ve beceri seviyesini arttırarak kaliteli ürün ve hizmet sağlamayı,</li>
+      <li>Müşterilerimize dürüstlük ilkesi çerçevesinde en iyi hizmeti sunmayı,</li>
+      <li>Bu amaçla uygulanabilir, gerekli tüm şartların yerine getirileceğini ve gerekli kaynakların bulunabilirliliğinin sağlanmasını taahhüt ederiz.</li>
+    </ul>
+    <p class="kalite-text">Hizmet anlayışımız; sipariş, üretim ve sevkiyat aşamalarında müşteri memnuniyetini her an göz önünde tutmak ve bu memnuniyetin artması için yeni yöntemler aramak.</p>
+  </div></div>
+
+<style>
+  .kalite-text { font-size: 14.5px; color: var(--g600); line-height: 1.85; margin-bottom: 14px; }
+  .kalite-list { list-style: none; padding: 0; margin: 0 0 16px 0; display: flex; flex-direction: column; gap: 10px; }
+  .kalite-list li { position: relative; padding-left: 22px; font-size: 14.5px; color: var(--g600); line-height: 1.7; }
+  .kalite-list li::before { content: '✓'; position: absolute; left: 0; top: 0; color: var(--blue); font-weight: 700; }
+</style>
+</Layout>
