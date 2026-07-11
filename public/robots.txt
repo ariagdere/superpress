@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://superpress.com.tr/sitemap.xml
