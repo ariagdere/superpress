@@ -18,12 +18,10 @@
   src:url('/fonts/NickelGothicVariable.woff2') format('woff2-variations');
   font-display:swap;
 }
-@font-face{font-family:'Helvetica Neue';src:url('/fonts/HelveticaNeue-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;ascent-override:71.4%;descent-override:19.8%;line-gap-override:8.3%}
-@font-face{font-family:'Helvetica Neue';src:url('/fonts/HelveticaNeue-Italic.woff2') format('woff2');font-weight:400;font-style:italic;font-display:swap;ascent-override:71.4%;descent-override:19.8%;line-gap-override:8.3%}
-@font-face{font-family:'Helvetica Neue';src:url('/fonts/HelveticaNeue-Medium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap;ascent-override:71.4%;descent-override:19.1%;line-gap-override:8.3%}
-@font-face{font-family:'Helvetica Neue';src:url('/fonts/HelveticaNeue-Bold.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap;ascent-override:71.4%;descent-override:19.8%;line-gap-override:8.3%}
-@font-face{font-family:'Helvetica Neue';src:url('/fonts/HelveticaNeue-BoldItalic.woff2') format('woff2');font-weight:700;font-style:italic;font-display:swap;ascent-override:71.4%;descent-override:19.8%;line-gap-override:8.3%}
-@font-face{font-family:'Helvetica Neue';src:url('/fonts/HelveticaNeue-Black.woff2') format('woff2');font-weight:900;font-style:normal;font-display:swap;ascent-override:71.4%;descent-override:16.8%;line-gap-override:8.3%}
+@font-face{font-family:'Liberation Sans';src:url('/fonts/LiberationSans-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Liberation Sans';src:url('/fonts/LiberationSans-Italic.woff2') format('woff2');font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:'Liberation Sans';src:url('/fonts/LiberationSans-Bold.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Liberation Sans';src:url('/fonts/LiberationSans-BoldItalic.woff2') format('woff2');font-weight:700;font-style:italic;font-display:swap}
 
 :root{
   --navy:#1D1D1B;--blue:#EB6811;--blue-l:#F08E4C;
@@ -31,7 +29,7 @@
   --g50:#f8f9fb;--g100:#eef1f5;--g200:#dde3ec;
   --g400:#8a96a8;--g600:#4a5568;--g800:#1e2535;
   --white:#fff;--green:#1a7a40;
-  --font:'Helvetica Neue',Helvetica,Arial,sans-serif;--cond:'Nickel Gothic Variable',Arial,sans-serif;
+  --font:'Liberation Sans',Arial,Helvetica,sans-serif;--cond:'Nickel Gothic Variable',Arial,sans-serif;
   --sh:0 2px 12px rgba(29,29,27,.10);--sh-lg:0 8px 32px rgba(29,29,27,.14);
 }
 body{font-family:var(--font);background:#e0e6f0;color:var(--g800);font-size:15px;line-height:1.6;font-synthesis:none;font-variation-settings:'wdth' 100,'slnt' 0}
