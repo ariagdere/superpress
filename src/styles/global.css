@@ -16,9 +16,9 @@
 @font-face{
   font-family:'Nickel Gothic Variable';
   src:url('/fonts/NickelGothicVariable.woff2') format('woff2-variations');
-  font-weight:400; /* bu font tek ağırlıkta, wght ekseni yok */
-  font-stretch:25% 150%; /* wdth ekseni */
-  font-style:oblique 0deg 15deg; /* slnt ekseni (0=dik, 15=marka rehberindeki "Oblique") */
+  font-weight:100 900; /* font tek ağırlıkta ama geniş aralık beyan ederek tarayıcının "sahte kalınlaştırma" yapmasını engelliyoruz */
+  font-stretch:25% 150%;
+  font-style:oblique 0deg 15deg;
   font-display:swap;
 }
 @font-face{font-family:'Helvetica Neue';src:url('/fonts/HelveticaNeue-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
@@ -37,7 +37,7 @@
   --font:'Helvetica Neue',Helvetica,Arial,sans-serif;--cond:'Nickel Gothic Variable',Arial,sans-serif;
   --sh:0 2px 12px rgba(29,29,27,.10);--sh-lg:0 8px 32px rgba(29,29,27,.14);
 }
-body{font-family:var(--font);background:#e0e6f0;color:var(--g800);font-size:15px;line-height:1.6}
+body{font-family:var(--font);background:#e0e6f0;color:var(--g800);font-size:15px;line-height:1.6;font-synthesis:none}
 
 /* ── SWITCHER ── */
 .sw{display:flex;gap:10px;background:var(--navy);padding:10px 16px;align-items:center;position:sticky;top:0;z-index:2000;box-shadow:0 2px 8px rgba(0,0,0,.3);flex-wrap:wrap}
