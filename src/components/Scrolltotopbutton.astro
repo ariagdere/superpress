@@ -1,0 +1,59 @@
+---
+// src/components/ScrollToTopButton.astro
+// Sadece mobilde (.mobile-only içinde kullanılmalı), belli bir kaydırma mesafesinden sonra beliren
+// "yukarı çık" butonu. Ürün listesi ve ürün detay sayfalarında kullanılıyor.
+---
+<button class="scroll-top-btn" id="scrollTopBtn" aria-label="Yukarı çık" type="button">
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 19V5M5 12l7-7 7 7" />
+  </svg>
+</button>
+
+<style>
+  .scroll-top-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    z-index: 400;
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+    transition: opacity 0.22s ease, transform 0.22s ease;
+  }
+  .scroll-top-btn.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .scroll-top-btn:active {
+    background: var(--blue);
+  }
+</style>
+
+<script>
+  const btn = document.getElementById('scrollTopBtn');
+  if (btn) {
+    const onScroll = () => {
+      if (window.scrollY > 600) {
+        btn.classList.add('show');
+      } else {
+        btn.classList.remove('show');
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+</script>
