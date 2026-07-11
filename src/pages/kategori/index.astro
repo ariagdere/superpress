@@ -1,0 +1,17 @@
+---
+// src/pages/kategori/index.astro
+export const prerender = false;
+
+import Layout from '../../layouts/Layout.astro';
+import CategoryListing from '../../components/CategoryListing.astro';
+import { getCategoriesWithCounts, getAllProducts } from '../../lib/queries.js';
+import { env } from 'cloudflare:workers';
+
+const lang = 'tr';
+const db = env.DB;
+
+const [categories, products] = await Promise.all([getCategoriesWithCounts(db, lang), getAllProducts(db, lang)]);
+---
+<Layout title="Ürünlerimiz — Superpress" lang={lang}>
+  <CategoryListing categories={categories} activeSlug={null} title="Tüm Ürünler" products={products} lang={lang} />
+</Layout>
