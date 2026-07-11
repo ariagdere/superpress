@@ -1,0 +1,139 @@
+---
+export const prerender = false;
+import Layout from '../../layouts/Layout.astro';
+import { getProductOptionsList } from '../../lib/queries.js';
+import { env } from 'cloudflare:workers';
+
+const lang = 'en';
+const products = await getProductOptionsList(env.DB, lang);
+---
+<Layout title="Contact — Superpress" lang={lang}>
+  <div class="desktop-only">
+    <div class="bc"><div class="bc-in"><a href="/en">Home</a><span>›</span><span class="cur">Contact</span></div></div>
+  </div>
+  <div class="mobile-only">
+    <div class="m-bc"><a href="/en">Home</a><span>›</span><span style="color:var(--g800)">Contact</span></div>
+  </div>
+
+  <div class="cb-header"><div class="cb-header-in">
+    <div class="cb-header-top"><h1>Contact</h1></div>
+    <p>Fill in the form with your questions about our products or project, and we'll get back to you as soon as possible.</p>
+  </div></div>
+
+  <div class="sec"><div class="sec-in" style="max-width:640px">
+    <div id="contactSuccess" style="display:none;background:#e6f7ec;border:1px solid #a3d9b5;color:#1a7a3d;padding:16px 18px;border-radius:8px;margin-bottom:20px;font-size:14px">
+      Your request has been received — we'll get back to you shortly.
+    </div>
+    <div id="contactError" style="display:none;background:#fdecec;border:1px solid #f0b3b3;color:#a32020;padding:14px 18px;border-radius:8px;margin-bottom:20px;font-size:14px"></div>
+
+    <form id="contactForm" style="display:flex;flex-direction:column;gap:16px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div>
+          <label class="cf-lbl">Full Name *</label>
+          <input type="text" name="name" required class="cf-input" />
+        </div>
+        <div>
+          <label class="cf-lbl">Email *</label>
+          <input type="email" name="email" required class="cf-input" />
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div>
+          <label class="cf-lbl">Phone</label>
+          <input type="tel" name="phone" class="cf-input" />
+        </div>
+        <div>
+          <label class="cf-lbl">Product of Interest</label>
+          <select name="product" class="cf-input">
+            <option value="">Select (optional)</option>
+            {products.map((p) => <option value={p.prod_code}>{p.title}</option>)}
+          </select>
+        </div>
+      </div>
+      <div>
+        <label class="cf-lbl">Your Message</label>
+        <textarea name="message" rows="5" class="cf-input" style="resize:vertical"></textarea>
+      </div>
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAADzH9tbdF9k28nV8"></div>
+      <button type="submit" id="contactSubmit" class="btn-p" style="align-self:flex-start;border:none;cursor:pointer">Send</button>
+    </form>
+
+    <div style="margin-top:40px;padding-top:32px;border-top:1px solid var(--g200);display:flex;flex-direction:column;gap:8px;font-size:14px;color:var(--g600)">
+      <div><strong style="color:var(--navy)">Address:</strong> Bozkurt Mahallesi Dolapdere Caddesi No: 207 İç Kapı No: 1, Şişli / İstanbul, Türkiye</div>
+      <div><strong style="color:var(--navy)">Phone:</strong> <a href="tel:+902164996962" style="color:var(--blue)">+90 216 499 69 62</a></div>
+      <div><strong style="color:var(--navy)">Email:</strong> <a href="mailto:info@superpress.com.tr" style="color:var(--blue)">info@superpress.com.tr</a></div>
+      <a href="https://api.whatsapp.com/send/?phone=905303576490&text&app_absent=0" target="_blank" rel="noopener" class="ftr-wa-btn" style="align-self:flex-start"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M12.04 2c-5.52 0-10 4.48-10 10 0 1.77.46 3.45 1.27 4.9L2 22l5.25-1.38A9.96 9.96 0 0 0 12.04 22c5.52 0 10-4.48 10-10s-4.48-10-10-10Zm5.86 14.24c-.25.7-1.24 1.28-2.03 1.45-.55.11-1.26.2-3.67-.79-3.08-1.27-5.06-4.4-5.21-4.6-.15-.2-1.25-1.66-1.25-3.17s.79-2.25 1.07-2.56c.28-.31.61-.39.81-.39.2 0 .41 0 .59.01.19.01.44-.07.69.53.25.6.85 2.08.93 2.23.08.15.13.33.03.53-.1.2-.15.33-.3.5-.15.18-.31.4-.44.53-.15.15-.3.31-.13.61.17.3.76 1.25 1.63 2.02 1.12 1 2.06 1.31 2.36 1.46.3.15.48.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.68-.15.28.1 1.76.83 2.06.98.3.15.5.23.57.35.08.13.08.75-.17 1.45Z"/></svg> Ask on WhatsApp</a>
+    </div>
+  </div></div>
+</Layout>
+
+<style>
+  .cf-lbl { display: block; font-size: 12.5px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .cf-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--g200);
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: var(--font);
+    color: var(--g800);
+    background: #fff;
+  }
+  .cf-input:focus { outline: none; border-color: var(--blue); }
+  @media (max-width: 860px) {
+    #contactForm > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+    .cf-input { font-size: 16px; }
+  }
+</style>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script>
+  const form = document.getElementById('contactForm');
+  const successBox = document.getElementById('contactSuccess');
+  const errorBox = document.getElementById('contactError');
+  const submitBtn = document.getElementById('contactSubmit');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    successBox.style.display = 'none';
+    errorBox.style.display = 'none';
+
+    const formData = new FormData(form);
+    const productSelect = form.querySelector('select[name="product"]');
+    const productLabel = productSelect.selectedIndex > 0 ? productSelect.options[productSelect.selectedIndex].text : '';
+
+    const payload = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      phone: formData.get('phone'),
+      product: productLabel,
+      message: formData.get('message'),
+      turnstileToken: formData.get('cf-turnstile-response'),
+      lang: 'en',
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Something went wrong.');
+      successBox.style.display = 'block';
+      form.reset();
+      if (window.turnstile) window.turnstile.reset();
+      successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (err) {
+      errorBox.textContent = err.message || 'Something went wrong, please try again.';
+      errorBox.style.display = 'block';
+      if (window.turnstile) window.turnstile.reset();
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send';
+    }
+  });
+</script>
