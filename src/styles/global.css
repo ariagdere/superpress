@@ -113,7 +113,7 @@ body{font-family:var(--font);background:#e0e6f0;color:var(--g800);font-size:15px
 .topbar-in .lang a.cur{background:var(--accent);color:var(--navy)}
 .hdr{background:#fff;border-bottom:1px solid var(--g200);position:sticky;top:0;z-index:100;box-shadow:var(--sh)}
 .hdr-in{max-width:1140px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:32px;height:68px}
-.hdr-in img{height:46px;width:auto}
+.hdr-in img{height:46px;width:auto;margin-top:8px}
 nav{display:flex;gap:4px;margin-left:auto}
 .nav-a{padding:8px 14px;color:var(--g600);text-decoration:none;font-size:13.5px;font-weight:500;border-radius:5px;transition:.18s;position:relative}
 .nav-home{display:flex;align-items:center;padding:8px 10px}
