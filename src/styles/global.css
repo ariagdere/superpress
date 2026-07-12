@@ -25,7 +25,7 @@
 
 :root{
   --navy:#1D1D1B;--blue:#EB6811;--blue-l:#F08E4C;
-  --accent:#EB6811;--accent-l:#F08E4C;
+  --accent:#EB6811;--accent-l:#F08E4C;--accent-rgb:235,104,17;
   --g50:#f8f9fb;--g100:#eef1f5;--g200:#dde3ec;
   --g400:#8a96a8;--g600:#4a5568;--g800:#1e2535;
   --white:#fff;--green:#1a7a40;
@@ -176,10 +176,10 @@ nav{display:flex;gap:4px;margin-left:auto}
 .hero-r img{max-width:340px;max-height:420px;width:auto;height:auto;object-fit:contain;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.25)}
 .hero-r img{max-height:420px;width:auto;object-fit:contain;opacity:1;border-radius:6px;box-shadow:0 16px 48px rgba(0,0,0,.4);transform:rotate(1.5deg)}
 .hero-r::before{content:none}
-.badge{display:inline-flex;align-items:center;gap:7px;background:rgba(232,160,32,.15);border:1px solid rgba(232,160,32,.35);padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;color:var(--accent-l);letter-spacing:.05em;text-transform:uppercase;margin-bottom:18px}
+.badge{display:inline-flex;align-items:center;gap:7px;background:rgba(var(--accent-rgb),.15);border:1px solid rgba(var(--accent-rgb),.35);padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.05em;text-transform:uppercase;margin-bottom:18px}
 .badge::before{content:'';width:7px;height:7px;background:var(--accent);border-radius:50%}
 .hero-l h1{font-family:var(--cond);text-transform:uppercase;font-size:44px;font-weight:700;color:#fff;line-height:1.1;margin-bottom:16px}
-.hero-l h1 span{color:var(--accent-l);font-style:normal}
+.hero-l h1 span{color:var(--accent);font-style:normal}
 .hero-l p{font-size:15px;color:rgba(255,255,255,.72);line-height:1.65;margin-bottom:28px}
 .hero-btns{display:flex;gap:12px}
 .btn-p{background:var(--accent);color:var(--navy);padding:12px 26px;border-radius:5px;font-weight:700;font-size:14px;text-decoration:none;transition:.2s;display:inline-flex;align-items:center;justify-content:center}
@@ -252,10 +252,10 @@ nav{display:flex;gap:4px;margin-left:auto}
 .m-hero img.m-hero-img{width:auto;height:220px;max-width:50%;object-fit:contain;opacity:1;display:block;margin:0 auto;padding:20px 0 0;filter:drop-shadow(0 8px 16px rgba(0,0,0,.3));transform:rotate(1.5deg)}
 .m-hero-body{padding:22px 16px 28px;position:relative}
 .m-hero-body::before{content:none}
-.m-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(232,160,32,.15);border:1px solid rgba(232,160,32,.3);padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;color:var(--accent-l);margin-bottom:12px}
+.m-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(var(--accent-rgb),.15);border:1px solid rgba(var(--accent-rgb),.3);padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;color:var(--accent);margin-bottom:12px}
 .m-badge::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:50%}
 .m-hero h1{font-family:var(--cond);text-transform:uppercase;font-size:26px;font-weight:700;color:#fff;line-height:1.15;margin-bottom:10px}
-.m-hero h1 span{color:var(--accent-l);font-style:normal}
+.m-hero h1 span{color:var(--accent);font-style:normal}
 .m-hero p{font-size:13px;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:18px}
 .m-hero-btns{display:flex;gap:10px}
 .m-btn-p{background:var(--accent);color:var(--navy);padding:10px 18px;border-radius:5px;font-weight:700;font-size:13px;text-decoration:none;flex:1;text-align:center}
@@ -459,7 +459,7 @@ nav{display:flex;gap:4px;margin-left:auto}
 .dp-wrap{border:1px solid var(--g200);border-radius:10px;overflow:hidden;margin-top:12px}
 .dp-hdr{background:var(--navy);padding:10px 14px;display:flex;justify-content:space-between;align-items:center}
 .dp-code{font-family:monospace;font-size:13px;font-weight:700;color:#fff}
-.dp-bolt{background:rgba(232,160,32,.2);color:var(--accent-l);font-size:11px;font-weight:600;padding:2px 8px;border-radius:3px}
+.dp-bolt{background:rgba(var(--accent-rgb),.2);color:var(--accent-l);font-size:11px;font-weight:600;padding:2px 8px;border-radius:3px}
 .dp-body{padding:12px}
 .dp-dim-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:10px}
 .dp-dim{background:var(--g50);border-radius:4px;padding:5px;text-align:center}
