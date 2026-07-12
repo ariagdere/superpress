@@ -106,8 +106,9 @@ export async function getKeyDocuments(db, lang) {
  * göster" mantığını uygular.
  */
 export async function getActiveHeroSlides(db, lang) {
+  const visCol = lang === 'en' ? 'show_on_en' : 'show_on_tr';
   const { results } = await db
-    .prepare('SELECT * FROM hero_slides WHERE brand = ? AND is_active = 1 ORDER BY sort_order')
+    .prepare(`SELECT * FROM hero_slides WHERE brand = ? AND is_active = 1 AND ${visCol} = 1 ORDER BY sort_order`)
     .bind(BRAND)
     .all();
 
@@ -121,11 +122,11 @@ export async function getActiveHeroSlides(db, lang) {
     headline: lang === 'en' ? s.headline_en : s.headline_tr,
     highlightWord: lang === 'en' ? s.highlight_word_en : s.highlight_word_tr,
     subtext: lang === 'en' ? s.subtext_en : s.subtext_tr,
-    fgImageUrl: s.fg_image_url,
+    fgImageUrl: lang === 'en' ? s.fg_image_url_en : s.fg_image_url_tr,
     ctaPrimaryText: lang === 'en' ? s.cta_primary_text_en : s.cta_primary_text_tr,
-    ctaPrimaryLink: s.cta_primary_link,
+    ctaPrimaryLink: lang === 'en' ? s.cta_primary_link_en : s.cta_primary_link_tr,
     ctaSecondaryText: lang === 'en' ? s.cta_secondary_text_en : s.cta_secondary_text_tr,
-    ctaSecondaryLink: s.cta_secondary_link,
+    ctaSecondaryLink: lang === 'en' ? s.cta_secondary_link_en : s.cta_secondary_link_tr,
     slideLink: s.slide_link,
   }));
 }
