@@ -53,7 +53,6 @@ function splitHeadline(headline: string | null, highlight: string | null) {
             <div class="hero-slide-text">
               {s.badgeText && (
                 <div class="badge">
-                  <span class="badge-dot"></span>
                   <span>{s.badgeText}</span>
                 </div>
               )}
@@ -115,14 +114,13 @@ function splitHeadline(headline: string | null, highlight: string | null) {
     background: rgba(var(--accent-rgb, 235,104,17), .15); border: 1px solid rgba(var(--accent-rgb, 235,104,17), .35);
     font-size: 12px; font-weight: 600; color: var(--accent-l, var(--accent)); letter-spacing: .05em; text-transform: uppercase; margin-bottom: 18px;
   }
-  .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
   .hero-slide-text h1 { font-family: var(--cond); text-transform: uppercase; font-size: 34px; color: #fff; line-height: 1.2; margin-bottom: 14px; }
   .hero-slide-text h1 span { color: var(--accent); }
   .hero-slide-text p { font-size: 14.5px; color: rgba(255,255,255,.75); line-height: 1.7; margin-bottom: 26px; max-width: 480px; }
   .hero-slide-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
 
   .hero-slide-img { display: flex; align-items: center; justify-content: center; }
-  .hero-slide-img img { max-width: 100%; height: auto; border-radius: 8px; }
+  .hero-slide-img img { max-width: 300px; max-height: 300px; width: auto; height: auto; object-fit: contain; border-radius: 6px; box-shadow: 0 16px 48px rgba(0,0,0,.4); transform: rotate(1.5deg); }
 
   .hero-dots { position: absolute; left: 0; right: 0; bottom: 20px; z-index: 2; display: flex; justify-content: center; gap: 8px; }
   .hero-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.35); border: none; padding: 0; cursor: pointer; transition: .2s; }
