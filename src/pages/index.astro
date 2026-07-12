@@ -3,35 +3,25 @@
 export const prerender = false;
 
 import Layout from '../layouts/Layout.astro';
-import { getCategoriesWithCounts, getKeyDocuments } from '../lib/queries.js';
+import HeroSlider from '../components/HeroSlider.astro';
+import { getCategoriesWithCounts, getKeyDocuments, getActiveHeroSlides } from '../lib/queries.js';
 import { env } from 'cloudflare:workers';
 
 const lang = 'tr';
 const db = env.DB;
 
-const [categories, keyDocs] = await Promise.all([getCategoriesWithCounts(db, lang), getKeyDocuments(db, lang)]);
+const [categories, keyDocs, heroSlides] = await Promise.all([
+  getCategoriesWithCounts(db, lang),
+  getKeyDocuments(db, lang),
+  getActiveHeroSlides(db, lang),
+]);
 ---
 <Layout title="SUPERPRESS" lang={lang}>
 
+<HeroSlider slides={heroSlides} />
+
 <!-- ══════════ DESKTOP ══════════ -->
 <div class="desktop-only">
-  <div class="hero"><div class="hero-in">
-    <div class="hero-l">
-      <div class="badge">Simpa Elektrik İştiraki</div>
-      <h1>Kablo Montajında <span>Profesyonel</span> El Aletleri</h1>
-      <p>Kablo kesme, mekanik ve hidrolik pabuç sıkma penseleri — Simpa Elektrik'in ürettiği kablo pabuçlarıyla tam uyumlu, montaja hazır çözümler.</p>
-      <div class="hero-btns">
-        <a href="/kategori/" class="btn-p">Ürünleri İncele →</a>
-        <a href={keyDocs.catalogUrl || '#'} target="_blank" rel="noopener" class="btn-s"><svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15"><path fill-rule="evenodd" d="M4 4a2 2 0 0 1 2-2h4.586A2 2 0 0 1 12 2.586L15.414 6A2 2 0 0 1 16 7.414V16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4Zm2 6a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2H6Zm0 4a1 1 0 1 0 0 2h5a1 1 0 1 0 0-2H6Z" clip-rule="evenodd" /></svg> Katalog İndir</a>
-      </div>
-    </div>
-    <div class="hero-r">
-      <a href={keyDocs.catalogUrl || '#'} target="_blank" rel="noopener">
-        <img src="https://assets.superpress.com.tr/superpressktalogkutuSAG1.png" alt="Superpress Ürün Kataloğu" />
-      </a>
-    </div>
-  </div></div>
-
   <div class="sec"><div class="sec-in" style="max-width:900px;text-align:center">
     <div class="about-lbl" style="color:var(--blue)">Hakkımızda</div>
     <h2 style="font-family:var(--cond);text-transform:uppercase;font-size:28px;color:var(--navy);margin:10px 0 18px">Simpa Elektrik Çatısı Altında, Kablo El Aletlerinde Uzman</h2>
@@ -61,17 +51,6 @@ const [categories, keyDocs] = await Promise.all([getCategoriesWithCounts(db, lan
 
 <!-- ══════════ MOBILE ══════════ -->
 <div class="mobile-only">
-  <div class="m-hero">
-    <a href={keyDocs.catalogUrl || '#'} target="_blank" rel="noopener">
-      <img class="m-hero-img" src="https://assets.superpress.com.tr/superpressktalogkutuSAG1.png" alt="Superpress Ürün Kataloğu" />
-    </a>
-    <div class="m-hero-body">
-      <div class="m-badge">Simpa Elektrik İştiraki</div>
-      <h1>Kablo Montajında <span>Profesyonel</span> El Aletleri</h1>
-      <p>Kablo kesme, mekanik ve hidrolik pabuç sıkma penseleri — montaja hazır çözümler.</p>
-      <div class="m-hero-btns"><a href="/kategori/" class="m-btn-p">Ürünleri İncele</a><a href={keyDocs.catalogUrl || '#'} target="_blank" rel="noopener" class="m-btn-s">Katalog</a></div>
-    </div>
-  </div>
 
   <div class="m-sec">
     <div style="text-align:center;padding:8px 4px 20px">
