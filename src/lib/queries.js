@@ -100,6 +100,36 @@ export async function getKeyDocuments(db, lang) {
   };
 }
 
+/**
+ * Aktif hero slaytları (sadece BRAND, dosya başındaki sabit), dile göre doğru
+ * alanlar seçilmiş halde. Boş alanlar null kalır — render tarafı "tanımlıysa
+ * göster" mantığını uygular.
+ */
+export async function getActiveHeroSlides(db, lang) {
+  const { results } = await db
+    .prepare('SELECT * FROM hero_slides WHERE brand = ? AND is_active = 1 ORDER BY sort_order')
+    .bind(BRAND)
+    .all();
+
+  return results.map((s) => ({
+    id: s.id,
+    mirrorLayout: !!s.mirror_layout,
+    bgColor: s.bg_color,
+    bgImageUrl: s.bg_image_url,
+    bgImageOpacity: s.bg_image_opacity,
+    badgeText: lang === 'en' ? s.badge_text_en : s.badge_text_tr,
+    headline: lang === 'en' ? s.headline_en : s.headline_tr,
+    highlightWord: lang === 'en' ? s.highlight_word_en : s.highlight_word_tr,
+    subtext: lang === 'en' ? s.subtext_en : s.subtext_tr,
+    fgImageUrl: s.fg_image_url,
+    ctaPrimaryText: lang === 'en' ? s.cta_primary_text_en : s.cta_primary_text_tr,
+    ctaPrimaryLink: s.cta_primary_link,
+    ctaSecondaryText: lang === 'en' ? s.cta_secondary_text_en : s.cta_secondary_text_tr,
+    ctaSecondaryLink: s.cta_secondary_link,
+    slideLink: s.slide_link,
+  }));
+}
+
 /** İletişim formu ürün dropdown'ı için hafif liste (kod + başlık), sadece Superpress ürünleri. */
 export async function getProductOptionsList(db, lang) {
   const titleCol = lang === 'en' ? 'title_en' : 'title_tr';
