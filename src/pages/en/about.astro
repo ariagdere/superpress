@@ -33,11 +33,11 @@ const [anaMetin, kalitePolitikasi] = await Promise.all([
   </div></div>
 
 <style>
-  .ana-metin p { font-size: 14.5px; color: var(--g600); line-height: 1.9; margin-bottom: 18px; }
-  .ana-metin p:last-child { margin-bottom: 0; }
-  .kalite-text p { font-size: 14.5px; color: var(--g600); line-height: 1.85; margin-bottom: 14px; }
-  .kalite-text ul { list-style: none; padding: 0; margin: 0 0 16px 0; display: flex; flex-direction: column; gap: 10px; }
-  .kalite-text li { position: relative; padding-left: 22px; font-size: 14.5px; color: var(--g600); line-height: 1.7; }
-  .kalite-text li::before { content: '✓'; position: absolute; left: 0; top: 0; color: var(--blue); font-weight: 700; }
+  :global(.ana-metin p) { font-size: 14.5px; color: var(--g600); line-height: 1.9; margin-bottom: 18px; }
+  :global(.ana-metin p:last-child) { margin-bottom: 0; }
+  :global(.kalite-text p) { font-size: 14.5px; color: var(--g600); line-height: 1.85; margin-bottom: 14px; }
+  :global(.kalite-text ul) { list-style: none; padding: 0; margin: 0 0 16px 0; display: flex; flex-direction: column; gap: 10px; }
+  :global(.kalite-text li) { position: relative; padding-left: 22px; font-size: 14.5px; color: var(--g600); line-height: 1.7; }
+  :global(.kalite-text li::before) { content: '✓'; position: absolute; left: 0; top: 0; color: var(--blue); font-weight: 700; }
 </style>
 </Layout>
