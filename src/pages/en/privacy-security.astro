@@ -27,11 +27,11 @@ const gizlilikMetni = await getPageSection(env.DB, 'gizlilik-ve-guvenlik', 'gizl
 
 <style>
   .legal-updated { font-size: 12.5px; color: var(--g400); margin-bottom: 20px; }
-  .legal-content h2 { font-family: var(--cond);text-transform:uppercase; font-size: 20px; color: var(--navy); margin-top: 28px; margin-bottom: 12px; }
-  .legal-content p { font-size: 14px; color: var(--g600); line-height: 1.85; margin-bottom: 14px; }
-  .legal-content strong { color: var(--g800); }
-  .legal-content a { color: var(--blue); text-decoration: none; }
-  .legal-content ul { list-style: none; padding: 0; margin: 0 0 14px 0; display: flex; flex-direction: column; gap: 8px; }
-  .legal-content li { position: relative; padding-left: 18px; font-size: 14px; color: var(--g600); line-height: 1.7; }
-  .legal-content li::before { content: '•'; position: absolute; left: 0; color: var(--blue); font-weight: 700; }
+  :global(.legal-content h2) { font-family: var(--cond);text-transform:uppercase; font-size: 20px; color: var(--navy); margin-top: 28px; margin-bottom: 12px; }
+  :global(.legal-content p) { font-size: 14px; color: var(--g600); line-height: 1.85; margin-bottom: 14px; }
+  :global(.legal-content strong) { color: var(--g800); }
+  :global(.legal-content a) { color: var(--blue); text-decoration: none; }
+  :global(.legal-content ul) { list-style: none; padding: 0; margin: 0 0 14px 0; display: flex; flex-direction: column; gap: 8px; }
+  :global(.legal-content li) { position: relative; padding-left: 18px; font-size: 14px; color: var(--g600); line-height: 1.7; }
+  :global(.legal-content li::before) { content: '•'; position: absolute; left: 0; color: var(--blue); font-weight: 700; }
 </style>
