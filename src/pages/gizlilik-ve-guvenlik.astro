@@ -1,8 +1,11 @@
 ---
 export const prerender = false;
 import Layout from '../layouts/Layout.astro';
+import { getPageSection } from '../lib/queries.js';
+import { env } from 'cloudflare:workers';
 
 const lang = 'tr';
+const gizlilikMetni = await getPageSection(env.DB, 'gizlilik-ve-guvenlik', 'gizlilik_metni', lang);
 ---
 <Layout title="Gizlilik ve Güvenlik — Superpress" lang={lang}>
   <div class="desktop-only">
@@ -16,92 +19,19 @@ const lang = 'tr';
     <h1 style="font-family:var(--cond);text-transform:uppercase;font-size:28px;color:var(--navy);margin-bottom:6px">Gizlilik ve Güvenlik</h1>
     <div class="legal-updated">Son güncelleme: Temmuz 2026</div>
 
-    <p class="legal-p">
-      Superpress Elektrik Malzemesi Sanayi ve Ticaret Ltd. Şti. ("Superpress") olarak, 6698 sayılı Kişisel
-      Verilerin Korunması Kanunu ("KVKK") kapsamında, web sitemiz üzerinden elde ettiğimiz kişisel verilerinizin
-      güvenliğine ve gizliliğine önem veriyoruz. Bu metin, hangi verileri hangi amaçla topladığımızı, nasıl
-      koruduğumuzu ve haklarınızı nasıl kullanabileceğinizi açıklamak amacıyla hazırlanmıştır.
-    </p>
-
-    <h2 class="legal-h2">Veri Sorumlusu</h2>
-    <p class="legal-p">
-      KVKK uyarınca kişisel verileriniz, veri sorumlusu sıfatıyla Superpress Elektrik Malzemesi Sanayi ve Ticaret
-      Ltd. Şti. tarafından, aşağıda açıklanan kapsamda işlenmektedir.
-    </p>
-
-    <h2 class="legal-h2">Hangi Kişisel Verileri Topluyoruz</h2>
-    <p class="legal-p">Kişisel verilerinizi yalnızca sitemizdeki iletişim formunu doldurmanız halinde, sizin paylaştığınız ölçüde topluyoruz. Sitemizde hesap oluşturma veya üyelik sistemi bulunmamaktadır.</p>
-    <p class="legal-p legal-p-tight"><strong>İletişim / Teklif Formu:</strong> Ad soyisim, e-posta, telefon, ilgilendiğiniz ürün ve mesajınız.</p>
-    <p class="legal-p legal-p-tight"><strong>Otomatik Olarak Toplanan Teknik Veriler:</strong> Formu gönderirken istenmeyen/otomatik (bot) başvuruları engellemek amacıyla kullandığımız Cloudflare Turnstile servisi, IP adresiniz gibi teknik verileri işler. Barındırma altyapımız (Cloudflare) güvenlik amacıyla standart sunucu günlüklerini (log) tutabilir.</p>
-
-    <h2 class="legal-h2">Kişisel Verileri Hangi Amaçlarla İşliyoruz</h2>
-    <ul class="legal-ul">
-      <li>İletişim ve teklif taleplerinizi yanıtlamak,</li>
-      <li>Sitemizin güvenliğini sağlamak ve kötüye kullanımı (spam, otomatik bot başvuruları vb.) önlemek,</li>
-      <li>Yasal yükümlülüklerimizi yerine getirmek.</li>
-    </ul>
-
-    <h2 class="legal-h2">Kişisel Verilerin Aktarılması</h2>
-    <p class="legal-p">
-      Kişisel verileriniz, yukarıdaki amaçların gerçekleştirilmesi için gerekli ölçüde, hizmet aldığımız
-      teknoloji sağlayıcılarıyla paylaşılmaktadır: form bildirimlerinin size ve ilgili birimimize e-posta ile
-      ulaştırılması için <strong>Resend</strong>, barındırma, veritabanı ve güvenlik (bot koruması) altyapımız için
-      <strong>Cloudflare</strong>. Bu sağlayıcılar yurt dışında sunucu bulundurabilmektedir; bu nedenle
-      verileriniz KVKK'nın yurt dışına veri aktarımına ilişkin hükümleri kapsamında işlenmektedir. Verileriniz,
-      belirtilenler dışında, yasal zorunluluklar haricinde üçüncü kişilerle paylaşılmaz veya satılmaz.
-    </p>
-
-    <h2 class="legal-h2">İşlemenin Hukuki Sebebi</h2>
-    <p class="legal-p">
-      Kişisel verileriniz; bir sözleşmenin kurulması veya ifasıyla doğrudan ilgili olması, hukuki yükümlülüğümüzün
-      yerine getirilmesi, ilgili kişinin (sizin) temel hak ve özgürlüklerine zarar vermemek kaydıyla veri
-      sorumlusunun meşru menfaati ve açık rızanızın bulunduğu hallerde açık rızanız hukuki sebeplerine dayanılarak
-      işlenmektedir.
-    </p>
-
-    <h2 class="legal-h2">Saklama Süresi</h2>
-    <p class="legal-p">
-      Kişisel verileriniz, işlenme amacının gerektirdiği süre boyunca ve ilgili mevzuatta öngörülen zamanaşımı
-      süreleri saklı kalmak kaydıyla saklanır; bu sürenin sonunda silinir, yok edilir veya anonim hale getirilir.
-    </p>
-
-    <h2 class="legal-h2">Çerezler (Cookies)</h2>
-    <p class="legal-p">
-      Sitemizde üyelik veya yorum sistemi bulunmadığından, bu amaçlarla çerez kullanılmamaktadır. Form güvenliği
-      için kullanılan Cloudflare Turnstile, istenmeyen/bot başvuruları ayırt edebilmek amacıyla tarayıcınızda
-      geçici bir doğrulama bilgisi tutabilir.
-    </p>
-
-    <h2 class="legal-h2">KVKK Kapsamındaki Haklarınız</h2>
-    <p class="legal-p">KVKK'nın 11. maddesi uyarınca bize başvurarak;</p>
-    <ul class="legal-ul">
-      <li>Kişisel verilerinizin işlenip işlenmediğini öğrenme,</li>
-      <li>İşlenmişse buna ilişkin bilgi talep etme,</li>
-      <li>İşlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme,</li>
-      <li>Yurt içinde/yurt dışında aktarıldığı üçüncü kişileri bilme,</li>
-      <li>Eksik/yanlış işlenmişse düzeltilmesini isteme,</li>
-      <li>KVKK'da öngörülen şartlar çerçevesinde silinmesini/yok edilmesini isteme,</li>
-      <li>Düzeltme/silme işlemlerinin verilerin aktarıldığı üçüncü kişilere bildirilmesini isteme,</li>
-      <li>İşlenen verilerin münhasıran otomatik sistemlerle analiz edilmesi suretiyle aleyhinize bir sonucun ortaya çıkmasına itiraz etme,</li>
-      <li>Kanuna aykırı işlenme nedeniyle zarara uğramanız hâlinde zararın giderilmesini talep etme haklarına sahipsiniz.</li>
-    </ul>
-
-    <h2 class="legal-h2">Başvuru Yöntemi</h2>
-    <p class="legal-p">
-      Yukarıdaki haklarınızı kullanmak için taleplerinizi <a href="mailto:info@superpress.com.tr">info@superpress.com.tr</a>
-      adresine e-posta yoluyla veya Bozkurt Mahallesi Dolapdere Caddesi No: 207 İç Kapı No: 1, Şişli / İstanbul adresine yazılı olarak iletebilirsiniz.
-    </p>
+    <div class="legal-content">
+      <Fragment set:html={gizlilikMetni} />
+    </div>
   </div></div>
 </Layout>
 
 <style>
   .legal-updated { font-size: 12.5px; color: var(--g400); margin-bottom: 20px; }
-  .legal-h2 { font-family: var(--cond);text-transform:uppercase; font-size: 20px; color: var(--navy); margin-top: 28px; margin-bottom: 12px; }
-  .legal-p { font-size: 14px; color: var(--g600); line-height: 1.85; margin-bottom: 14px; }
-  .legal-p-tight { margin-bottom: 10px; }
-  .legal-p strong { color: var(--g800); }
-  .legal-p a { color: var(--blue); text-decoration: none; }
-  .legal-ul { list-style: none; padding: 0; margin: 0 0 14px 0; display: flex; flex-direction: column; gap: 8px; }
-  .legal-ul li { position: relative; padding-left: 18px; font-size: 14px; color: var(--g600); line-height: 1.7; }
-  .legal-ul li::before { content: '•'; position: absolute; left: 0; color: var(--blue); font-weight: 700; }
+  .legal-content h2 { font-family: var(--cond);text-transform:uppercase; font-size: 20px; color: var(--navy); margin-top: 28px; margin-bottom: 12px; }
+  .legal-content p { font-size: 14px; color: var(--g600); line-height: 1.85; margin-bottom: 14px; }
+  .legal-content strong { color: var(--g800); }
+  .legal-content a { color: var(--blue); text-decoration: none; }
+  .legal-content ul { list-style: none; padding: 0; margin: 0 0 14px 0; display: flex; flex-direction: column; gap: 8px; }
+  .legal-content li { position: relative; padding-left: 18px; font-size: 14px; color: var(--g600); line-height: 1.7; }
+  .legal-content li::before { content: '•'; position: absolute; left: 0; color: var(--blue); font-weight: 700; }
 </style>
