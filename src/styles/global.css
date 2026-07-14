@@ -140,15 +140,11 @@ nav{display:flex;gap:4px;margin-left:auto}
 .ftr-col h4{color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;font-family:var(--cond)}
 .ftr-brand img{height:52px;width:auto;margin-bottom:14px;filter:brightness(0) invert(1)}
 .ftr-brand p{font-size:12.5px;color:rgba(255,255,255,.55);line-height:1.7;max-width:260px}
-.ftr-social{display:flex;gap:12px;margin-top:16px}
-.ftr-social a{color:rgba(255,255,255,.55);transition:.2s}
-.ftr-social a:hover{color:#fff}
 .ftr-col a{display:block;color:rgba(255,255,255,.6);text-decoration:none;font-size:13px;margin-bottom:6px}
 .ftr-col a:hover{color:#fff}
 .ftr-wa-btn{display:inline-flex !important;align-items:center;gap:8px;background:#25D366;color:#fff !important;padding:10px 16px;border-radius:6px;font-size:13px;font-weight:600;margin-top:16px;transition:.2s;text-decoration:none}
 .ftr-wa-btn:hover{background:#1ebe5a;color:#fff !important}
-.ftr-col .ftr-linkedin{display:flex;align-items:center;gap:7px;margin-top:10px}
-.ftr-social{display:flex;gap:8px}
+.ftr-social{display:flex;align-items:center;gap:8px}
 .ftr-social-icon{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.08);color:rgba(255,255,255,.75);font-size:11px;font-weight:700;text-decoration:none;transition:.2s}
 .ftr-social-icon:hover{background:var(--blue);color:#fff}
 .ftr-bot{margin-top:32px;padding:14px 24px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;max-width:1140px;margin-left:auto;margin-right:auto}
