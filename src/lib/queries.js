@@ -386,3 +386,13 @@ export async function getRelatedProducts(db, categoryId, excludeProductId, lang,
     .all();
   return enrichWithRanges(db, results);
 }
+
+/** Admin panelden yönetilen statik sayfa içeriği (Hakkımızda, Gizlilik ve Güvenlik vb.). */
+export async function getPageSection(db, pageKey, sectionKey, lang) {
+  const row = await db
+    .prepare('SELECT content_tr, content_en FROM page_content WHERE brand = ? AND page_key = ? AND section_key = ?')
+    .bind(BRAND, pageKey, sectionKey)
+    .first();
+  if (!row) return null;
+  return lang === 'en' ? row.content_en : row.content_tr;
+}
