@@ -49,6 +49,10 @@ const [specsRaw, description, specialNote, drawingUrl, images, certificates, com
 ]);
 const WHATSAPP_URL = `https://api.whatsapp.com/send/?phone=${companyInfo.whatsapp_telefon || '905303576490'}&text&app_absent=0`;
 
+// Crimping form (hexagon.jpeg) images get a special caption — see chat explanation
+const isCrimpForm = drawingUrl ? drawingUrl.toLowerCase().includes('hexagon') : false;
+const drawingCaption = isCrimpForm ? 'Crimping Form' : 'Technical Reference Drawing';
+
 let variantTable = { columns: [], rows: [] };
 let kunyeRanges = [];
 if (product.has_variant_table) {
@@ -164,7 +168,7 @@ const quickItems = [
     {product.has_variant_table === 1 && (
       <div id="tab-tech" class="tab-pane on">
         <div class="diag-area mode-fixed">
-          {drawingUrl && <div class="diag-sticky-el"><img src={drawingUrl} alt="Technical Drawing" /><div class="diag-cap">Technical Reference Drawing</div></div>}
+          {drawingUrl && <div class="diag-sticky-el"><img src={drawingUrl} alt={drawingCaption} /><div class="diag-cap">{drawingCaption}</div></div>}
           <div class="diag-table-host">
             {filterOptions.length > 0 && (
               <div class="filter-row">
@@ -342,7 +346,7 @@ const quickItems = [
     <div id="mtech" class="m-tab-pane on">
       <div class="m-tbl-sec">
         <div class="diag-area mode-fixed" id="mDiagArea">
-          {drawingUrl && <div class="diag-sticky-el" id="mDiagSticky"><img src={drawingUrl} alt="Technical Drawing" /><div class="diag-cap">Technical Reference Drawing</div></div>}
+          {drawingUrl && <div class="diag-sticky-el" id="mDiagSticky"><img src={drawingUrl} alt={drawingCaption} /><div class="diag-cap">{drawingCaption}</div></div>}
           <div class="diag-table-host">
             {filterOptions.length > 0 && (
               <div class="m-filter-row">
