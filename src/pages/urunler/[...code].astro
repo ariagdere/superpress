@@ -49,6 +49,10 @@ const [specsRaw, description, specialNote, drawingUrl, images, certificates, com
 ]);
 const WHATSAPP_URL = `https://api.whatsapp.com/send/?phone=${companyInfo.whatsapp_telefon || '905303576490'}&text&app_absent=0`;
 
+// Sıkma formu (hexagon.jpeg) görselleri için özel başlık — bkz. sohbet açıklaması
+const isCrimpForm = drawingUrl ? drawingUrl.toLowerCase().includes('hexagon') : false;
+const drawingCaption = isCrimpForm ? 'Sıkma Formu' : 'Teknik Referans Çizimi';
+
 let variantTable = { columns: [], rows: [] };
 let kunyeRanges = [];
 if (product.has_variant_table) {
@@ -95,7 +99,7 @@ const quickItems = [
 ].filter(Boolean);
 
 ---
-<Layout title={`${title} — Simpa Elektrik`} lang={lang} enSwitchOverride={enSwitchOverride}>
+<Layout title={`${title} — Superpress`} lang={lang} enSwitchOverride={enSwitchOverride}>
 
 <!-- ══════════ MASAÜSTÜ ══════════ -->
 <div class="desktop-only">
@@ -164,7 +168,7 @@ const quickItems = [
     {product.has_variant_table === 1 && (
       <div id="tab-tech" class="tab-pane on">
         <div class="diag-area mode-fixed">
-          {drawingUrl && <div class="diag-sticky-el"><img src={drawingUrl} alt="Teknik Çizim" /><div class="diag-cap">Teknik Referans Çizimi</div></div>}
+          {drawingUrl && <div class="diag-sticky-el"><img src={drawingUrl} alt={drawingCaption} /><div class="diag-cap">{drawingCaption}</div></div>}
           <div class="diag-table-host">
             {filterOptions.length > 0 && (
               <div class="filter-row">
@@ -342,7 +346,7 @@ const quickItems = [
     <div id="mtech" class="m-tab-pane on">
       <div class="m-tbl-sec">
         <div class="diag-area mode-fixed" id="mDiagArea">
-          {drawingUrl && <div class="diag-sticky-el" id="mDiagSticky"><img src={drawingUrl} alt="Teknik Çizim" /><div class="diag-cap">Teknik Referans Çizimi</div></div>}
+          {drawingUrl && <div class="diag-sticky-el" id="mDiagSticky"><img src={drawingUrl} alt={drawingCaption} /><div class="diag-cap">{drawingCaption}</div></div>}
           <div class="diag-table-host">
             {filterOptions.length > 0 && (
               <div class="m-filter-row">
