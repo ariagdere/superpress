@@ -194,7 +194,7 @@ const quickItems = [
                     {koliCols.length > 0 && <th colspan={koliCols.length} style="text-align:center">Koli</th>}
                   </tr>
                   <tr>
-                    {boyutCols.map((c) => <th style="text-align:right" class="th-nocase">{c.label}</th>)}
+                    {boyutCols.map((c) => <th style="text-align:right">{c.label}</th>)}
                     {kutuCols.map((c) => <th style="text-align:right">{subLabel(c)}</th>)}
                     {koliCols.map((c) => <th style="text-align:right">{subLabel(c)}</th>)}
                   </tr>
@@ -528,16 +528,6 @@ const quickItems = [
 
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script define:vars={{ productBrand: product.brand || '', pageLang: lang, productTitle: title, productCode: product.prod_code }}>
-  // Teknik veri tablosu: iki satırlı gruplu başlık varsa (Boyutlar/Kutu/Koli gibi),
-  // ikinci satırın "top" değerini birinci satırın gerçek yüksekliğine göre ayarla
-  // ki sticky doğru istiflensin (bkz. sohbet açıklaması).
-  const stickyFirstRow = document.querySelector('#variantTbl thead tr:first-child');
-  const stickySecondRowThs = document.querySelectorAll('#variantTbl thead tr:last-child th');
-  if (stickyFirstRow && stickySecondRowThs.length > 0) {
-    const h = stickyFirstRow.getBoundingClientRect().height;
-    stickySecondRowThs.forEach((th) => { th.style.top = h + 'px'; });
-  }
-
   // Masaüstü sekme geçişi
   document.querySelectorAll('.tab-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
