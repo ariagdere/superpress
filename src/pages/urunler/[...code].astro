@@ -194,7 +194,7 @@ const quickItems = [
                     {koliCols.length > 0 && <th colspan={koliCols.length} style="text-align:center">Koli</th>}
                   </tr>
                   <tr>
-                    {boyutCols.map((c) => <th style="text-align:right">{c.label}</th>)}
+                    {boyutCols.map((c) => <th style="text-align:right" class="th-nocase">{c.label}</th>)}
                     {kutuCols.map((c) => <th style="text-align:right">{subLabel(c)}</th>)}
                     {koliCols.map((c) => <th style="text-align:right">{subLabel(c)}</th>)}
                   </tr>
