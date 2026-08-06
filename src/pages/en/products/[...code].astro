@@ -32,7 +32,7 @@ if (!product) {
 }
 
 // Bu ürünün TR karşılığı var mı? Yoksa dil switcher'ı "All Products"a düşsün, 404'e değil.
-const trExists = await db.prepare('SELECT 1 FROM products WHERE prod_code = ? AND title_tr IS NOT NULL').bind(code).first();
+const trExists = await db.prepare("SELECT 1 FROM products WHERE prod_code = ? AND brand = 'Superpress' AND title_tr IS NOT NULL").bind(code).first();
 const trSwitchOverride = trExists ? `/urunler/${code}` : '/kategori/';
 
 const [specsRaw, description, specialNote, drawingUrl, images, certificates, compatible, related, keyDocs, companyInfo] = await Promise.all([
@@ -44,10 +44,10 @@ const [specsRaw, description, specialNote, drawingUrl, images, certificates, com
   getCertificates(db, product.id),
   getCompatibleProducts(db, product.id, lang),
   getRelatedProducts(db, product.category_id, product.id, lang),
-  getKeyDocuments(db, product.brand, lang),
-  getCompanyInfo(db, 'Simpa'),
+  getKeyDocuments(db, lang),
+  getCompanyInfo(db),
 ]);
-const WHATSAPP_URL = `https://api.whatsapp.com/send/?phone=${companyInfo.whatsapp_telefon || '905544972085'}&text&app_absent=0`;
+const WHATSAPP_URL = `https://api.whatsapp.com/send/?phone=${companyInfo.whatsapp_telefon || '905303576490'}&text&app_absent=0`;
 
 // Crimping form (hexagon.jpeg) images get a special caption — see chat explanation
 const isCrimpForm = drawingUrl ? drawingUrl.toLowerCase().includes('hexagon') : false;
@@ -99,7 +99,7 @@ const quickItems = [
 ].filter(Boolean);
 
 ---
-<Layout title={`${title} — Simpa Elektrik`} lang={lang} trSwitchOverride={trSwitchOverride}>
+<Layout title={`${title} — Superpress`} lang={lang} trSwitchOverride={trSwitchOverride}>
 
 <!-- ══════════ MASAÜSTÜ ══════════ -->
 <div class="desktop-only">
@@ -515,7 +515,7 @@ const quickItems = [
   .quote-modal.open{display:flex}
   .quote-modal-card{background:#fff;border-radius:10px;max-width:460px;width:100%;max-height:88vh;overflow-y:auto;padding:26px;position:relative}
   .quote-modal-close{position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:var(--g50);border:none;color:var(--g600);font-size:14px;cursor:pointer}
-  .quote-modal-title{font-family:var(--cond);font-size:21px;color:var(--navy);margin-bottom:4px}
+  .quote-modal-title{font-family:var(--cond);text-transform:uppercase;font-size:21px;color:var(--navy);margin-bottom:4px}
   .quote-modal-product{font-size:13.5px;color:var(--g600);margin-bottom:18px}
   #quoteForm{display:flex;flex-direction:column;gap:14px}
   .cf-lbl{display:block;font-size:12.5px;font-weight:600;color:var(--navy);margin-bottom:6px}
