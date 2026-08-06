@@ -339,13 +339,11 @@ nav{display:flex;gap:4px;margin-left:auto}
 .filter-lbl{font-size:12px;font-weight:600;color:var(--g400);text-transform:uppercase;letter-spacing:.05em}
 .filter-sel{border:1px solid var(--g200);border-radius:5px;padding:7px 12px;font-size:13px;font-family:var(--font);color:var(--g800);background:#fff;cursor:pointer}
 .tbl-intro{font-size:14px;color:var(--g600);margin-bottom:16px;line-height:1.65;max-width:680px}
-.tbl-wrap{border-radius:8px;border:1px solid var(--g200);box-shadow:var(--sh)}
+.tbl-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--g200);box-shadow:var(--sh)}
 .tbl{width:100%;border-collapse:collapse;font-size:13px;white-space:nowrap}
 .tbl thead tr:first-child{background:var(--navy)}
 .tbl thead tr:last-child{background:#162540}
-.tbl thead th{padding:10px 8px;text-align:left;font-size:11px;font-weight:700;color:rgba(255,255,255,.85);letter-spacing:.05em;text-transform:uppercase;border-right:1px solid rgba(255,255,255,.08);position:sticky;top:0;z-index:10}
-.tbl thead tr:first-child th{z-index:11}
-.tbl thead th.th-nocase{text-transform:none;letter-spacing:normal}
+.tbl thead th{padding:10px 8px;text-align:left;font-size:11px;font-weight:700;color:rgba(255,255,255,.85);letter-spacing:.05em;text-transform:uppercase;border-right:1px solid rgba(255,255,255,.08)}
 .tbl tbody tr{border-bottom:1px solid var(--g100);transition:.1s}
 .tbl tbody tr:hover{background:var(--g50)}
 .tbl tbody tr:last-child{border-bottom:none}
