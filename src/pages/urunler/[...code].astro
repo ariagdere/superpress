@@ -21,7 +21,7 @@ import {
 } from '../../lib/queries.js';
 
 import { env } from 'cloudflare:workers';
-const lang = 'tr';
+const lang = 'tr'; // İlk sürüm: TR sabit. EN route'u ayrı bir sonraki adımda eklenecek.
 const { code } = Astro.params;
 const db = env.DB;
 
@@ -32,7 +32,7 @@ if (!product) {
 }
 
 // Bu ürünün EN karşılığı var mı? Yoksa dil switcher'ı "Tüm Ürünler"e düşsün, 404'e değil.
-const enExists = await db.prepare("SELECT 1 FROM products WHERE prod_code = ? AND brand = 'Superpress' AND title_en IS NOT NULL").bind(code).first();
+const enExists = await db.prepare('SELECT 1 FROM products WHERE prod_code = ? AND title_en IS NOT NULL').bind(code).first();
 const enSwitchOverride = enExists ? `/en/products/${code}` : '/en/category/';
 
 const [specsRaw, description, specialNote, drawingUrl, images, certificates, compatible, related, keyDocs, companyInfo] = await Promise.all([
@@ -44,10 +44,10 @@ const [specsRaw, description, specialNote, drawingUrl, images, certificates, com
   getCertificates(db, product.id),
   getCompatibleProducts(db, product.id, lang),
   getRelatedProducts(db, product.category_id, product.id, lang),
-  getKeyDocuments(db, lang),
-  getCompanyInfo(db),
+  getKeyDocuments(db, product.brand, lang),
+  getCompanyInfo(db, 'Simpa'),
 ]);
-const WHATSAPP_URL = `https://api.whatsapp.com/send/?phone=${companyInfo.whatsapp_telefon || '905303576490'}&text&app_absent=0`;
+const WHATSAPP_URL = `https://api.whatsapp.com/send/?phone=${companyInfo.whatsapp_telefon || '905544972085'}&text&app_absent=0`;
 
 // Sıkma formu (hexagon.jpeg) görselleri için özel başlık — bkz. sohbet açıklaması
 const isCrimpForm = drawingUrl ? drawingUrl.toLowerCase().includes('hexagon') : false;
@@ -99,7 +99,7 @@ const quickItems = [
 ].filter(Boolean);
 
 ---
-<Layout title={`${title} — Superpress`} lang={lang} enSwitchOverride={enSwitchOverride}>
+<Layout title={`${title} — Simpa Elektrik`} lang={lang} enSwitchOverride={enSwitchOverride}>
 
 <!-- ══════════ MASAÜSTÜ ══════════ -->
 <div class="desktop-only">
@@ -194,7 +194,7 @@ const quickItems = [
                     {koliCols.length > 0 && <th colspan={koliCols.length} style="text-align:center">Koli</th>}
                   </tr>
                   <tr>
-                    {boyutCols.map((c) => <th style="text-align:right">{c.label}</th>)}
+                    {boyutCols.map((c) => <th style="text-align:right" class="th-nocase">{c.label}</th>)}
                     {kutuCols.map((c) => <th style="text-align:right">{subLabel(c)}</th>)}
                     {koliCols.map((c) => <th style="text-align:right">{subLabel(c)}</th>)}
                   </tr>
@@ -515,7 +515,7 @@ const quickItems = [
   .quote-modal.open{display:flex}
   .quote-modal-card{background:#fff;border-radius:10px;max-width:460px;width:100%;max-height:88vh;overflow-y:auto;padding:26px;position:relative}
   .quote-modal-close{position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:var(--g50);border:none;color:var(--g600);font-size:14px;cursor:pointer}
-  .quote-modal-title{font-family:var(--cond);text-transform:uppercase;font-size:21px;color:var(--navy);margin-bottom:4px}
+  .quote-modal-title{font-family:var(--cond);font-size:21px;color:var(--navy);margin-bottom:4px}
   .quote-modal-product{font-size:13.5px;color:var(--g600);margin-bottom:18px}
   #quoteForm{display:flex;flex-direction:column;gap:14px}
   .cf-lbl{display:block;font-size:12.5px;font-weight:600;color:var(--navy);margin-bottom:6px}
