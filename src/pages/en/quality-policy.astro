@@ -1,0 +1,28 @@
+---
+export const prerender = false;
+import Layout from '../../layouts/Layout.astro';
+import { getPageSection } from '../../lib/queries.js';
+import { env } from 'cloudflare:workers';
+const lang = 'en';
+const kalitePolitikasi = await getPageSection(env.DB, 'hakkimizda', 'kalite_politikasi', lang);
+---
+<Layout title="Quality Policy — Superpress" lang={lang}>
+  <div class="desktop-only">
+    <div class="bc"><div class="bc-in"><a href="/en">Home</a><span>›</span><span class="cur">Our Quality Policy</span></div></div>
+  </div>
+  <div class="mobile-only">
+    <div class="m-bc"><a href="/en">Home</a><span>›</span><span style="color:var(--g800)">Our Quality Policy</span></div>
+  </div>
+  <div class="sec"><div class="sec-in" style="max-width:820px">
+    <h1 style="font-family:var(--cond);text-transform:uppercase;font-size:28px;color:var(--navy);margin-bottom:20px">Our Quality Policy</h1>
+    <div class="kalite-text">
+      <Fragment set:html={kalitePolitikasi} />
+    </div>
+  </div></div>
+<style>
+  :global(.kalite-text p) { font-size: 14.5px; color: var(--g600); line-height: 1.85; margin-bottom: 14px; }
+  :global(.kalite-text ul) { list-style: none; padding: 0; margin: 0 0 16px 0; display: flex; flex-direction: column; gap: 10px; }
+  :global(.kalite-text li) { position: relative; padding-left: 22px; font-size: 14.5px; color: var(--g600); line-height: 1.7; }
+  :global(.kalite-text li::before) { content: '✓'; position: absolute; left: 0; top: 0; color: var(--blue); font-weight: 700; }
+</style>
+</Layout>
