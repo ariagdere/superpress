@@ -344,6 +344,7 @@ nav{display:flex;gap:4px;margin-left:auto}
 .tbl thead tr:first-child{background:var(--navy)}
 .tbl thead tr:last-child{background:#162540}
 .tbl thead th{padding:10px 8px;text-align:left;font-size:11px;font-weight:700;color:rgba(255,255,255,.85);letter-spacing:.05em;text-transform:uppercase;border-right:1px solid rgba(255,255,255,.08)}
+.tbl thead th.th-nocase{text-transform:none;letter-spacing:normal}
 .tbl tbody tr{border-bottom:1px solid var(--g100);transition:.1s}
 .tbl tbody tr:hover{background:var(--g50)}
 .tbl tbody tr:last-child{border-bottom:none}
