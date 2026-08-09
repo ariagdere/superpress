@@ -319,8 +319,14 @@ async function enrichWithRanges(db, products) {
 /** Bir kategorideki tüm Superpress ürünleri, her biri için Kesit/Civata aralığı hesaplanmış halde. */
 export async function getProductsInCategory(db, categorySlug, lang) {
   const titleCol = lang === 'en' ? 'title_en' : 'title_tr';
-  const category = await db.prepare('SELECT id, name_tr, name_en FROM categories WHERE slug = ?').bind(categorySlug).first();
+  const category = await db.prepare('SELECT id, name_tr, name_en, brand FROM categories WHERE slug = ?').bind(categorySlug).first();
   if (!category) return { category: null, products: [] };
+
+  // Kategori açıkça diğer markaya (Simpa) aitse bu sitede hiç gösterme.
+  // "Ürün sayısı 0 ise yok say" eski mantığı kaldırıldı — artık marka
+  // categories.brand'den geliyor, ürünü olmayan Superpress kategorileri
+  // de (boş halde, "çok yakında" mesajıyla) doğru şekilde render olsun diye.
+  if (category.brand && category.brand !== BRAND) return { category: null, products: [] };
 
   const { results: products } = await db
     .prepare(
@@ -332,9 +338,6 @@ export async function getProductsInCategory(db, categorySlug, lang) {
     )
     .bind(category.id, BRAND)
     .all();
-
-  // Bu kategoride Superpress ürünü yoksa (aslında bir Simpa-only kategoriyse), yok say
-  if (products.length === 0) return { category: null, products: [] };
 
   return { category, products: await enrichWithRanges(db, products) };
 }
