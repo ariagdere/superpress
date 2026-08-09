@@ -11,7 +11,6 @@ interface Props {
 const { categories, activeSlug, title, products, lang } = Astro.props;
 const seriesWord = lang === 'en' ? 'series' : 'ürün serisi';
 const allProductsLabel = lang === 'en' ? 'All Products' : 'Tüm Ürünler';
-const totalCount = categories.reduce((sum, c) => sum + c.product_count, 0);
 
 // Layout.astro ile aynı TR <-> EN segment eşleştirmesi
 const SEGMENT_MAP = { kategori: 'category', urunler: 'products' };
@@ -34,7 +33,7 @@ import ScrollToTopButton from './ScrollToTopButton.astro';
   <div class="cb-header"><div class="cb-header-in">
     <div class="cb-header-top">
       <h1>{lang === 'en' ? 'Our Products' : 'Ürünlerimiz'}</h1>
-      <a href={lp('/kategori/')} class={`cb-tab${activeSlug === null ? ' on' : ''}`}>{allProductsLabel} · {totalCount}</a>
+      <a href={lp('/kategori/')} class={`cb-tab${activeSlug === null ? ' on' : ''}`}>{allProductsLabel}</a>
     </div>
     <p>{lang === 'en' ? 'Select a product group below to view all series in that group right underneath.' : 'Aşağıdan bir ürün grubu seçin, o gruba ait tüm ürün serilerini hemen altta görüntüleyin.'}</p>
     <div class="cb-cat-grid">
@@ -99,7 +98,7 @@ import ScrollToTopButton from './ScrollToTopButton.astro';
         </div>
         <div class="m-drawer-list">
           <a href={lp('/kategori/')} class={`m-drawer-item${activeSlug === null ? ' on' : ''}`}>
-            <div class="m-drawer-info"><div class="m-drawer-name">{allProductsLabel}</div><div class="m-drawer-sub">{totalCount} {seriesWord}</div></div>
+            <div class="m-drawer-info"><div class="m-drawer-name">{allProductsLabel}</div></div>
             {activeSlug === null && <span class="m-drawer-check">✓</span>}
           </a>
           {categories.map((c) => (
