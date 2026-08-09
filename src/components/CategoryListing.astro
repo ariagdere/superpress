@@ -53,6 +53,9 @@ import ScrollToTopButton from './ScrollToTopButton.astro';
       <div class="cb-grid-count"><strong>{products.length}</strong> {seriesWord}</div>
     </div>
     <div class="cb-grid">
+      {products.length === 0 && (
+        <p class="cb-empty">{lang === 'en' ? 'New products will be added soon.' : 'Çok yakında yeni ürünler eklenecektir.'}</p>
+      )}
       {products.map((p) => (
         <a href={lp(`/urunler/${p.prod_code}`)} class="cb-card">
           <div class="cb-card-img">{p.image && <img src={p.image} alt={p.title} />}</div>
@@ -116,6 +119,9 @@ import ScrollToTopButton from './ScrollToTopButton.astro';
       <div class="m-cb-grid-count"><strong>{products.length}</strong> {seriesWord}</div>
     </div>
     <div class="m-cb-list">
+      {products.length === 0 && (
+        <p class="cb-empty">{lang === 'en' ? 'New products will be added soon.' : 'Çok yakında yeni ürünler eklenecektir.'}</p>
+      )}
       {products.map((p) => (
         <a href={lp(`/urunler/${p.prod_code}`)} class="m-cb-card">
           <div class="m-cb-img">{p.image && <img src={p.image} alt={p.title} />}</div>
@@ -147,3 +153,13 @@ import ScrollToTopButton from './ScrollToTopButton.astro';
     if (e.target === overlay) overlay.classList.remove('open');
   });
 </script>
+
+<style>
+  .cb-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 14px;
+    color: var(--g400);
+  }
+</style>
