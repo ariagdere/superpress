@@ -273,7 +273,7 @@ export async function getCategoriesWithCounts(db, lang) {
     )
     .bind(BRAND)
     .all();
-  return results.filter((c) => c.product_count > 0);
+  return results;
 }
 
 function formatRange(set, isNumeric) {
