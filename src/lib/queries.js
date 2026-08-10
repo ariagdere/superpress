@@ -197,7 +197,7 @@ export async function getVariantTable(db, productId, lang) {
   const labelCol = lang === 'en' ? 'label_en' : 'label_tr';
 
   const { results: variants } = await db
-    .prepare('SELECT id, variant_code FROM product_variants WHERE product_id = ? ORDER BY sort_order')
+    .prepare('SELECT id, variant_code FROM product_variants WHERE product_id = ? ORDER BY variant_code')
     .bind(productId)
     .all();
 
