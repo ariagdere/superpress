@@ -135,7 +135,7 @@ export async function getActiveHeroSlides(db, lang) {
 export async function getProductOptionsList(db, lang) {
   const titleCol = lang === 'en' ? 'title_en' : 'title_tr';
   const { results } = await db
-    .prepare(`SELECT prod_code, ${titleCol} as title FROM products WHERE brand = ? AND ${titleCol} IS NOT NULL AND is_active = 1 ORDER BY sort_order`)
+    .prepare(`SELECT prod_code, ${titleCol} as title FROM products WHERE brand = ? AND ${titleCol} IS NOT NULL AND is_active = 1 ORDER BY prod_code`)
     .bind(BRAND)
     .all();
   return results;
@@ -334,7 +334,7 @@ export async function getProductsInCategory(db, categorySlug, lang) {
               (SELECT file_url FROM product_images pi WHERE pi.product_id = p.id ORDER BY is_primary DESC, sort_order LIMIT 1) as image
        FROM products p
        WHERE p.category_id = ? AND p.brand = ? AND p.${titleCol} IS NOT NULL AND p.is_active = 1
-       ORDER BY p.sort_order`
+       ORDER BY p.prod_code`
     )
     .bind(category.id, BRAND)
     .all();
@@ -351,7 +351,7 @@ export async function getAllProducts(db, lang) {
               (SELECT file_url FROM product_images pi WHERE pi.product_id = p.id ORDER BY is_primary DESC, sort_order LIMIT 1) as image
        FROM products p
        WHERE p.brand = ? AND p.${titleCol} IS NOT NULL AND p.is_active = 1
-       ORDER BY p.sort_order`
+       ORDER BY p.prod_code`
     )
     .bind(BRAND)
     .all();
@@ -384,7 +384,7 @@ export async function getRelatedProducts(db, categoryId, excludeProductId, lang,
               (SELECT file_url FROM product_images pi WHERE pi.product_id = p.id ORDER BY is_primary DESC, sort_order LIMIT 1) as image
        FROM products p
        WHERE p.category_id = ? AND p.id != ? AND p.brand = ? AND p.${titleCol} IS NOT NULL AND p.is_active = 1
-       ORDER BY p.sort_order LIMIT ?`
+       ORDER BY p.prod_code LIMIT ?`
     )
     .bind(categoryId, excludeProductId, BRAND, limit)
     .all();
