@@ -407,3 +407,23 @@ export async function getCompanyInfo(db) {
   const { results: socialLinks } = await db.prepare('SELECT platform, url FROM company_social_links WHERE brand = ? ORDER BY sort_order').bind(BRAND).all();
   return { ...(info || {}), socialLinks };
 }
+
+/**
+ * Teknik veri tablosundaki ham değerleri TR sayı formatına çevirir
+ * (ondalık ayracı "," binlik ayracı "."). Sadece değerin BAŞINDAKİ sayıyı
+ * işler; "M8", "Beyaz/White", "~1,3 kg." gibi zaten-metin ya da
+ * zaten-Türkçe-formatlı değerlere ve "005" gibi baştaki sıfırlı kodlara
+ * hiç dokunmaz (bkz. sohbet açıklaması).
+ */
+export function formatTechnicalValue(value) {
+  if (value == null) return value;
+  const s = String(value).trim();
+  const m = s.match(/^(~?)(-?)(\d+)(?:\.(\d+))?(.*)$/);
+  if (!m) return s;
+  const [, tilde, sign, intPart, decPart, rest] = m;
+  if (rest && !/^\s/.test(rest)) return s;
+  if (intPart.length > 1 && intPart[0] === '0') return s;
+  const withThousands = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  const formatted = decPart ? `${withThousands},${decPart}` : withThousands;
+  return `${tilde}${sign}${formatted}${rest}`;
+}
