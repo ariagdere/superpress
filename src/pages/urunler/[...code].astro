@@ -186,6 +186,27 @@ const quickItems = [
                 ))}
               </div>
             )}
+            <div class="tbl-outer">
+              <div class="tbl-head-clip">
+                <table class="tbl tbl-head-clone" aria-hidden="true">
+                  <thead>
+                    <tr>
+                      <th rowspan="2">Ürün Kodu</th>
+                      {kunyeFiltreCols.map((c) => <th rowspan="2" style="text-align:right">{c.label}</th>)}
+                      {boyutCols.length > 0 && <th colspan={boyutCols.length} style="text-align:center">Boyutlar (mm)</th>}
+                      {ekOzellikCols.map((c) => <th rowspan="2" style="text-align:right">{c.label}{c.unit ? ` (${c.unit})` : ''}</th>)}
+                      {singleAdetCols.map((c) => <th rowspan="2" style="text-align:right">{c.label}</th>)}
+                      {kutuCols.length > 0 && <th colspan={kutuCols.length} style="text-align:center">Kutu</th>}
+                      {koliCols.length > 0 && <th colspan={koliCols.length} style="text-align:center">Koli</th>}
+                    </tr>
+                    <tr>
+                      {boyutCols.map((c) => <th style="text-align:right" class="th-nocase">{c.label}</th>)}
+                      {kutuCols.map((c) => <th style="text-align:right">{subLabel(c)}</th>)}
+                      {koliCols.map((c) => <th style="text-align:right">{subLabel(c)}</th>)}
+                    </tr>
+                  </thead>
+                </table>
+              </div>
             <div class="tbl-wrap">
               <table class="tbl" id="variantTbl">
                 <thead>
@@ -218,6 +239,7 @@ const quickItems = [
                   ))}
                 </tbody>
               </table>
+            </div>
             </div>
           </div>
         </div>
@@ -734,6 +756,107 @@ const quickItems = [
     } finally {
       quoteSubmit.disabled = false;
       quoteSubmit.textContent = 'Gönder';
+    }
+  });
+// Teknik veri tablosu: sticky header (ayrı bir "klon" başlık + JS ile genişlik/scroll senkronu).
+  // .tbl-wrap'te overflow-x:auto olduğu için (yatay scroll şart) position:sticky'yi doğrudan
+  // gerçek thead'e uygulamak çalışmıyor — tarayıcı overflow-x:auto olan elemanda otomatik
+  // overflow-y:auto da hesaplıyor, bu da sticky'nin sayfa yerine o kutuya bağlanmasına yol açıyor.
+  // Çözüm: gerçek tablo (thead+tbody) olduğu gibi kalıyor ve ölçüm kaynağı olarak kullanılıyor;
+  // görünen sticky başlık ise .tbl-wrap dışındaki ayrı bir klon tablo, genişlikleri gerçek
+  // tablodan JS ile birebir kopyalanıyor, yatay scroll'u da senkronize ediliyor.
+  document.querySelectorAll('.tbl-outer').forEach((outer) => {
+    const headClip = outer.querySelector('.tbl-head-clip');
+    const headTable = outer.querySelector('.tbl-head-clone');
+    const bodyWrap = outer.querySelector('.tbl-wrap');
+    const bodyTable = bodyWrap ? bodyWrap.querySelector('table') : null;
+    if (!headClip || !headTable || !bodyWrap || !bodyTable) return;
+
+    const realThead = bodyTable.querySelector('thead');
+    const bodyFirstRow = bodyTable.querySelector('tbody tr');
+    if (!realThead || !bodyFirstRow) return;
+
+    function setup() {
+      const colCount = bodyFirstRow.children.length;
+      const widths = new Array(colCount).fill(0);
+
+      // Veri hücrelerinin doğal genişliği (tüm satırlar, sütun başına maksimum)
+      bodyTable.querySelectorAll('tbody tr').forEach((tr) => {
+        Array.from(tr.children).forEach((td, i) => {
+          if (i < colCount) widths[i] = Math.max(widths[i], td.getBoundingClientRect().width);
+        });
+      });
+
+      // Başlık hücrelerinin doğal genişliği. 1. satır: rowspan=2 hücreler tek bir sütuna karşılık
+      // gelir; colspan'li grup başlıkları (Boyutlar/Kutu/Koli) genişliklerini 2. satırdaki alt
+      // başlıklardan alır. 2. satırdaki hücreler DOM sırasıyla grupların göründüğü sırayla eşleşir.
+      const headRows = realThead.querySelectorAll('tr');
+      const row1 = headRows[0];
+      const row2 = headRows[1] || null;
+      const row2Children = row2 ? Array.from(row2.children) : [];
+      let colIdx = 0;
+      let row2Idx = 0;
+      if (row1) {
+        Array.from(row1.children).forEach((th) => {
+          const span = parseInt(th.getAttribute('colspan') || '1', 10);
+          if (span === 1) {
+            if (colIdx < colCount) widths[colIdx] = Math.max(widths[colIdx], th.getBoundingClientRect().width);
+            colIdx += 1;
+          } else {
+            for (let k = 0; k < span; k++) {
+              const subTh = row2Children[row2Idx];
+              if (subTh && colIdx < colCount) widths[colIdx] = Math.max(widths[colIdx], subTh.getBoundingClientRect().width);
+              colIdx += 1;
+              row2Idx += 1;
+            }
+          }
+        });
+      }
+
+      if (colIdx !== colCount) return; // beklenmedik bir yapı varsa dokunmadan çık
+
+      // İçerik container'dan (kart genişliği) darsa aradaki farkı sütunlara oranlı dağıt —
+      // böylece tablo hâlâ "yayılıyor", tek tek sütun genişlikleri de iki tabloda birebir aynı olur.
+      const availableWidth = bodyWrap.clientWidth;
+      const totalNatural = widths.reduce((a, b) => a + b, 0);
+      let finalWidths = widths.slice();
+      if (totalNatural > 0 && totalNatural < availableWidth) {
+        const scale = availableWidth / totalNatural;
+        finalWidths = widths.map((w) => w * scale);
+      }
+      // Sütun genişliklerini TEK TEK yuvarlamak (ör. Math.ceil) toplamla tutarsız hale
+      // gelebiliyor ve bu da "her şey görünüyor ama yine de ince bir scroll var" durumuna
+      // yol açıyordu — artık ham (yuvarlanmamış) değerleri kullanıp, tarayıcının kenarlık/
+      // piksel yuvarlamasına karşı en geniş sütundan 2px pay bırakıyoruz.
+      if (finalWidths.length > 0) {
+        const maxIdx = finalWidths.indexOf(Math.max(...finalWidths));
+        finalWidths[maxIdx] = Math.max(0, finalWidths[maxIdx] - 2);
+      }
+      const totalWidth = finalWidths.reduce((a, b) => a + b, 0);
+
+      [headTable, bodyTable].forEach((tbl) => {
+        tbl.querySelectorAll(':scope > colgroup').forEach((cg) => cg.remove());
+        const colgroup = document.createElement('colgroup');
+        finalWidths.forEach((w) => {
+          const col = document.createElement('col');
+          col.style.width = w + 'px';
+          colgroup.appendChild(col);
+        });
+        tbl.insertBefore(colgroup, tbl.firstChild);
+        tbl.style.tableLayout = 'fixed';
+        tbl.style.width = totalWidth + 'px';
+      });
+
+      realThead.style.display = 'none';
+      headClip.style.display = 'block';
+
+      bodyWrap.addEventListener('scroll', () => { headClip.scrollLeft = bodyWrap.scrollLeft; }, { passive: true });
+    }
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(setup);
+    } else {
+      setup();
     }
   });
 </script>
