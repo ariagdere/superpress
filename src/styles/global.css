@@ -750,7 +750,7 @@ nav{display:flex;gap:4px;margin-left:auto}
 .cb-cat-grid{max-width:1140px;margin:0 auto;padding:0 24px;display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
 
 /* Anasayfa "Ürün Grupları" — kare vitrin kartları */
-.groups-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.groups-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 .group-card{display:block;text-decoration:none;border-radius:12px;overflow:hidden;border:1px solid var(--g200);background:#fff;transition:.2s}
 .group-card:hover{box-shadow:var(--sh-lg);transform:translateY(-3px);border-color:var(--blue)}
 .group-card-img{aspect-ratio:1/1;background:var(--g50);display:flex;align-items:center;justify-content:center;overflow:hidden}
