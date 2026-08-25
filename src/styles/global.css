@@ -350,7 +350,7 @@ nav{display:flex;gap:4px;margin-left:auto}
 .tbl tbody tr{border-bottom:1px solid var(--g100);transition:.1s}
 .tbl tbody tr:hover{background:var(--g50)}
 .tbl tbody tr:last-child{border-bottom:none}
-.tbl td{padding:9px 8px;color:var(--g600);border-right:1px solid var(--g100);white-space:nowrap}
+.tbl td{padding:9px 8px;color:var(--g600);border-right:1px solid var(--g50);white-space:nowrap}
 .tbl td:first-child{font-family:monospace;font-size:12px;font-weight:700;color:var(--navy);background:var(--g50)}
 .tbl td.d{font-weight:500;color:var(--g800);text-align:right}
 .tbl td.p{color:var(--g600);text-align:right}
