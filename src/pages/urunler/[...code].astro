@@ -52,7 +52,7 @@ const WHATSAPP_URL = `https://api.whatsapp.com/send/?phone=${companyInfo.whatsap
 // Katalog butonu: sayfa numarası tanımlıysa PDF'in ilgili sayfasına atlasın.
 // Bu site her zaman Superpress kataloğuna (tek, dil ayrımsız PDF) bağlanır.
 const catalogPage = product.catalog_page_superpress;
-const catalogHref = keyDocs.catalogUrl ? keyDocs.catalogUrl + (catalogPage ? `#page=${catalogPage}` : '') : null;
+const catalogHref = keyDocs.catalogUrl ? `/katalog-goruntule?url=${encodeURIComponent(keyDocs.catalogUrl)}${catalogPage ? `&page=${catalogPage}` : ''}` : null;
 
 // Sıkma formu (hexagon.jpeg) görselleri için özel başlık — bkz. sohbet açıklaması
 const isCrimpForm = drawingUrl ? drawingUrl.toLowerCase().includes('hexagon') : false;
