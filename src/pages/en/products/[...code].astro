@@ -50,8 +50,8 @@ const [specsRaw, description, specialNote, drawingUrl, images, certificates, com
 ]);
 const WHATSAPP_URL = `https://api.whatsapp.com/send/?phone=${companyInfo.whatsapp_telefon || '905303576490'}&text&app_absent=0`;
 // Katalog butonu: sayfa numarası tanımlıysa PDF'in ilgili sayfasına atlasın.
-// Superpress markası tek (dil ayrımsız) PDF kullanıyor, Simpa TR/EN ayrı PDF.
-const catalogPage = product.brand === 'Superpress' ? product.catalog_page_superpress : product.catalog_page_en;
+// Bu site her zaman Superpress kataloğuna (tek, dil ayrımsız PDF) bağlanır.
+const catalogPage = product.catalog_page_superpress;
 const catalogHref = keyDocs.catalogUrl ? keyDocs.catalogUrl + (catalogPage ? `#page=${catalogPage}` : '') : null;
 
 // Crimping form (hexagon.jpeg) images get a special caption — see chat explanation
